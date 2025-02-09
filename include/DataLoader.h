@@ -6,9 +6,19 @@
 #include <vector>
 #include <chrono>
 
+
+enum class SleepPhaseType {
+    Light,
+    Deep,
+    REM,
+    Awake
+};
+
+SleepPhaseType fromString(const std::string &phaseStr);
+
 // фаза сна
 struct SleepPhase {
-    std::string phase;      // "Light", "Deep", "REM", "Awake"
+    SleepPhaseType type;
     std::string start;
     std::string end;
 };
@@ -19,6 +29,9 @@ struct DailySleepData {
     std::string bedtime;
     std::string wakeTime;
     std::vector<SleepPhase> phases;
+//    для будущих визуализаций
+//    int averageHeartRate;
+//    int respirationRate;
 };
 
 
@@ -27,6 +40,7 @@ public:
 
     static DailySleepData LoadFromJsonFile(const std::string &filename);
 
+    //todo лучше перейти на один файл
     static std::vector<DailySleepData> LoadFromMultipleJsonFiles(const std::vector<std::string> &filenames);
 };
 

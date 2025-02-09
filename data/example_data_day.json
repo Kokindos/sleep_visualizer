@@ -4,32 +4,32 @@
   "wake_time": "07:30",
   "phases": [
     {
-      "phase": "Light",
+      "type": "Light",
       "start": "23:30",
       "end": "00:15"
     },
     {
-      "phase": "Deep",
+      "type": "Deep",
       "start": "00:15",
       "end": "02:15"
     },
     {
-      "phase": "REM",
+      "type": "REM",
       "start": "02:15",
       "end": "03:00"
     },
     {
-      "phase": "Light",
+      "type": "Light",
       "start": "03:00",
       "end": "04:30"
     },
     {
-      "phase": "Awake",
+      "type": "Awake",
       "start": "04:30",
       "end": "04:45"
     },
     {
-      "phase": "Light",
+      "type": "Light",
       "start": "04:45",
       "end": "07:00"
     }
