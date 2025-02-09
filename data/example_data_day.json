@@ -1,0 +1,38 @@
+{
+  "date": "2025-02-01",
+  "bedtime": "23:30",
+  "wake_time": "07:30",
+  "phases": [
+    {
+      "phase": "Light",
+      "start": "23:30",
+      "end": "00:15"
+    },
+    {
+      "phase": "Deep",
+      "start": "00:15",
+      "end": "02:15"
+    },
+    {
+      "phase": "REM",
+      "start": "02:15",
+      "end": "03:00"
+    },
+    {
+      "phase": "Light",
+      "start": "03:00",
+      "end": "04:30"
+    },
+    {
+      "phase": "Awake",
+      "start": "04:30",
+      "end": "04:45"
+    },
+    {
+      "phase": "Light",
+      "start": "04:45",
+      "end": "07:00"
+    }
+  ]
+}
+
