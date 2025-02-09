@@ -31,7 +31,7 @@ DailySleepData DataLoader::LoadFromJsonFile(const std::string &filename) {
             for (auto &phase: j["phases"]) {
                 SleepPhase sp;
 
-                sp.type = fromString(phase.value("phase", ""));
+                sp.type = fromString(phase.value("type", ""));
                 sp.start = phase.value("start", "");
                 sp.end = phase.value("end", "");
                 result.phases.push_back(sp);
