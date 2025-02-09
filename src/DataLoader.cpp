@@ -17,14 +17,9 @@ DailySleepData DataLoader::loadFromJsonFile(const std::string &filename) {
         nlohmann::json j;
         ifs >> j;
 
-        std::string dateStr = j.value("date", "");
-        std::string bedtimeStr = j.value("bedtime", "");
-        std::string wakeTimeStr = j.value("wake_time", "");
-
-        result.date = parseDateTime(dateStr, "%Y-%m-%d");
-        //todo указывать в json'e дату
-        result.bedtime = parseDateTime(dateStr + " " + bedtimeStr);
-        result.wakeTime = parseDateTime(dateStr + " " + wakeTimeStr);
+        result.date = parseDateTime(j.value("date", ""), "%Y-%m-%d");
+        result.bedtime = parseDateTime(j.value("bedtime", ""));
+        result.wakeTime = parseDateTime(j.value("wake_time", ""));
 
         if (j.contains("phases") && j["phases"].is_array()) {
             for (auto &phase: j["phases"]) {
