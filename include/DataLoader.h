@@ -15,7 +15,6 @@ enum class SleepPhaseType {
     Awake
 };
 
-// фаза сна
 struct SleepPhase {
     SleepPhaseType type;
     DateTime start;
