@@ -17,7 +17,9 @@ public:
 
     static std::string onlyDate(const std::chrono::system_clock::time_point &tp);
 
-    static std::chrono::system_clock::time_point unixToTimePoint(double unixTime);
+    static std::chrono::system_clock::time_point unixToTimePoint(const double &unixTime);
+
+    static double timePointToUnix(const std::chrono::system_clock::time_point &tp);
 };
 
 #endif //SLEEPVISUALIZER_DATE_FORMATTER_H

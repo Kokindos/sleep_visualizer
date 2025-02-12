@@ -3,62 +3,30 @@
 #include <implot.h>
 #include <imgui.h>
 #include <string>
+#include <unordered_map>
 
-//Преобразует time_point в double (кол-во секунд с 1.01.1970)
-static double TimePointToUnix(const std::chrono::system_clock::time_point &tp) {
-    auto duration = std::chrono::duration<double>(tp.time_since_epoch());
-    return duration.count();
-}
+struct PhaseVisualInfo {
+    double yLevel;
+    ImVec4 color;
+    const char *name;
 
-//Сопоставление имени фазы с “уровнем” по оси Y
-static double PhaseToY(const SleepPhaseType &phase) {
-    switch (phase) {
-        case SleepPhaseType::Awake:
-            return 1.0;
-        case SleepPhaseType::Light:
-            return 2.0;
-        case SleepPhaseType::Deep:
-            return 3.0;
-        case SleepPhaseType::REM:
-            return 4.0;
-        default:
-            return 0.0;
+    static const PhaseVisualInfo &getInfo(SleepPhaseType phase) {
+        static const std::unordered_map<SleepPhaseType, PhaseVisualInfo> phaseMap = {
+                {SleepPhaseType::Awake, {1.0, {1.0f, 0.0f, 0.0f, 1.0f}, "Awake"}},
+                {SleepPhaseType::Light, {2.0, {0.0f, 1.0f, 0.0f, 1.0f}, "Light"}},
+                {SleepPhaseType::Deep,  {3.0, {0.0f, 0.0f, 1.0f, 1.0f}, "Deep"}},
+                {SleepPhaseType::REM,   {4.0, {1.0f, 1.0f, 0.0f, 1.0f}, "REM"}},
+        };
+        static const PhaseVisualInfo defaultInfo = {0.0, {0.5f, 0.5f, 0.5f, 1.0f}, "Unknown"};
+
+        auto it = phaseMap.find(phase);
+        return (it != phaseMap.end()) ? it->second : defaultInfo;
     }
-}
+};
 
-static const char *phaseToString(const SleepPhaseType &phase) {
-    switch (phase) {
-        case SleepPhaseType::Awake:
-            return "Awake";
-        case SleepPhaseType::Light:
-            return "Light";
-        case SleepPhaseType::Deep:
-            return "Deep";
-        case SleepPhaseType::REM:
-            return "REM";
-        default:
-            return "Unknown";
-    }
-}
-
-static ImVec4 phaseToColor(const SleepPhaseType &phase) {
-    switch (phase) {
-        case SleepPhaseType::Awake:
-            return {1.0f, 0.0f, 0.0f, 1.0f};  // красный
-        case SleepPhaseType::Light:
-            return {0.0f, 1.0f, 0.0f, 1.0f};  // зелёный
-        case SleepPhaseType::Deep:
-            return {0.0f, 0.0f, 1.0f, 1.0f}; // синий
-        case SleepPhaseType::REM:
-            return {1.0f, 1.0f, 0.0f, 1.0f}; // жёлтый
-        default:
-            return {0.5f, 0.5f, 0.5f, 1.0f}; // серый
-    }
-}
 
 void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
-    if (data.phases.empty())
-        return;
+    if (data.phases.empty()) return;
 
     ImVec2 plotSize = ImVec2(ImGui::GetContentRegionAvail().x, 300);
 
@@ -70,17 +38,12 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
         static const char *yLabels[] = {"Awake", "Light", "Deep", "REM"};
         ImPlot::SetupAxisTicks(ImAxis_Y1, yTicks, 4, yLabels);
 
-        double startTime = TimePointToUnix(data.bedtime);
-        double endTime = TimePointToUnix(data.wakeTime);
+        double startTime = DateUtils::timePointToUnix(data.bedtime);
+        double endTime = DateUtils::timePointToUnix(data.wakeTime);
 
-        ImPlot::SetupAxesLimits(
-                startTime,
-                endTime,
-                0.0, 4.5
-        );
-        ImPlot::SetupAxisLimitsConstraints(
-                ImAxis_Y1, 0, 4.5
-        );
+        ImPlot::SetupAxesLimits(startTime, endTime, 0.0, 4.5);
+        ImPlot::SetupAxisLimitsConstraints(ImAxis_Y1, 0, 4.5);
+
         ImPlot::SetupAxisFormat(ImAxis_X1, [](double value, char *buff, int size, void *user_data) -> int {
             auto tp = DateUtils::unixToTimePoint(value);
             std::string formatted = DateUtils::onlyTime(tp);
@@ -90,32 +53,28 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
 
 
         std::vector<double> xTicks;
-
-        xTicks.push_back(TimePointToUnix(data.phases.front().start));
-
-
+        xTicks.push_back(DateUtils::timePointToUnix(data.phases.front().start));
         for (const auto &phase: data.phases) {
             const DateTime currentPhaseEnd = phase.end;
-            double xEnd = TimePointToUnix(currentPhaseEnd);
-
+            double xEnd = DateUtils::timePointToUnix(currentPhaseEnd);
             xTicks.push_back(xEnd);
         }
 
         ImPlot::SetupAxisTicks(ImAxis_X1, xTicks.data(), xTicks.size(), nullptr);
 
         for (const auto &phase: data.phases) {
-
             //todo не переводить два раза в юникс
-            double xStart = TimePointToUnix(phase.start);
-            double xEnd = TimePointToUnix(phase.end);
-            double yVal = PhaseToY(phase.type);
+            double xStart = DateUtils::timePointToUnix(phase.start);
+            double xEnd = DateUtils::timePointToUnix(phase.end);
+
+            const auto &info = PhaseVisualInfo::getInfo(phase.type);
 
             double xs[2] = {xStart, xEnd};
-            double ys[2] = {yVal, yVal};
+            double ys[2] = {info.yLevel, info.yLevel};
 
-            ImPlot::PushStyleColor(ImPlotCol_Line, phaseToColor(phase.type));
+            ImPlot::PushStyleColor(ImPlotCol_Line, info.color);
             ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 8.0f);
-            ImPlot::PlotLine(phaseToString(phase.type), xs, ys, 2);
+            ImPlot::PlotLine(info.name, xs, ys, 2);
 
             ImPlot::PopStyleVar();
             ImPlot::PopStyleColor();
