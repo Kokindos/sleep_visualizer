@@ -24,9 +24,17 @@ struct PhaseVisualInfo {
     }
 };
 
+struct PhaseDurationInfo {
+    const char *name;
+    int minutes;
+    double percentage;
+};
+
 
 void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     if (data.phases.empty()) return;
+
+    ImGui::Text("Дата %s:", DateUtils::onlyDate(data.date).c_str());
 
     ImVec2 plotSize = ImVec2(ImGui::GetContentRegionAvail().x, 300);
 
@@ -51,7 +59,6 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             return std::strlen(buff);
         });
 
-
         std::vector<double> xTicks;
         xTicks.push_back(DateUtils::timePointToUnix(data.phases.front().start));
         for (const auto &phase: data.phases) {
@@ -60,7 +67,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             xTicks.push_back(xEnd);
         }
 
-        ImPlot::SetupAxisTicks(ImAxis_X1, xTicks.data(), xTicks.size(), nullptr);
+        ImPlot::SetupAxisTicks(ImAxis_X1, xTicks.data(), (int) xTicks.size(), nullptr);
 
         for (const auto &phase: data.phases) {
             //todo не переводить два раза в юникс
@@ -84,86 +91,67 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     }
 }
 
-void Visualization::ShowPeriodMetricsPlot(const std::vector<DailySleepData> &data) {
-    // Для наглядности построим график общей длительности сна по датам
-    if (data.empty()) return;
+void Visualization::ShowDailySummary(const DailySleepData &data) {
+    SleepMetrics m = SleepAnalyzer::CalculateDailyMetrics(data);
 
-    // Сформируем вектор пар (x=индекс, y=totalSleepTime)
-    std::vector<double> x(data.size()), y(data.size());
+    std::array<PhaseDurationInfo, 3> phases = {{{"Light", m.lightSleepDuration, m.lightSleepPercent},
+                                                {"Deep", m.deepSleepDuration, m.deepSleepPercent},
+                                                {"REM", m.remSleepDuration, m.remSleepPercent}}};
 
-    // Считаем метрики на каждый день
-    std::vector<SleepMetrics> metricsVec;
-    metricsVec.reserve(data.size());
-    for (const auto &d: data) {
-        metricsVec.push_back(SleepAnalyzer::CalculateDailyMetrics(d));
+    ImGui::Begin("Статистика за день");
+
+    ImGui::Text("Длительность фаз сна (время и проценты):");
+    ImGui::Separator();
+
+    if (ImGui::BeginTable("DurationsTable", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+        ImGui::TableSetupColumn("Фаза");
+        ImGui::TableSetupColumn("Длительность");
+        ImGui::TableSetupColumn("Доля");
+        ImGui::TableHeadersRow();
+
+        for (auto &p: phases) {
+            ImGui::TableNextRow();
+
+            ImGui::TableSetColumnIndex(0);
+            ImGui::TextUnformatted(p.name);
+
+            ImGui::TableSetColumnIndex(1);
+            //todo возможно форматировать через встроенный форматтер, а не самописный
+            ImGui::Text("%s", DateUtils::formatTimeDiff(p.minutes).c_str());
+
+            ImGui::TableSetColumnIndex(2);
+            ImGui::Text("%.1f %%", p.percentage);
+        }
+
+        ImGui::EndTable();
     }
 
-    for (int i = 0; i < (int) data.size(); i++) {
-        x[i] = i;
-        y[i] = metricsVec[i].totalSleepTime;
-    }
+    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, 200))) {
+        ImPlot::SetupAxes("Фаза", "Минуты");
 
-    if (ImPlot::BeginPlot("График длительности сна за период", ImVec2(-1, 300))) {
-        ImPlot::SetupAxes("День (индекс)", "Часы сна", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
-        ImPlot::PlotLine("Total Sleep Time", x.data(), y.data(), (int) data.size());
+        //todo выделять память на тики в других графиках
+        std::vector<double> yMinutes(phases.size());
+        std::vector<const char *> xLabels(phases.size());
+        std::vector<double> xIndices(phases.size());
+
+        for (int i = 0; i < phases.size(); i++) {
+            yMinutes[i] = phases[i].minutes;
+            xLabels[i] = phases[i].name;
+            xIndices[i] = (double) i;
+        }
+
+
+        ImPlot::SetupAxisTicks(ImAxis_X1, xIndices.data(), (int) xIndices.size(), xLabels.data());
+
+        ImPlot::PlotBars("Фазы", xIndices.data(), yMinutes.data(), (int) phases.size(), 0.5);
         ImPlot::EndPlot();
     }
-}
 
-//void Visualization::ShowBedtimeVsRemPlot(const std::vector<DailySleepData> &data) {
-//    if (data.empty()) return;
-//
-//    // x = время отхода ко сну (в часах)
-//    // y = % REM (отношение REM ко всему времени сна)
-//    std::vector<double> x, y;
-//    x.reserve(data.size());
-//    y.reserve(data.size());
-//
-//    for (const auto &d: data) {
-//        SleepMetrics m = SleepAnalyzer::CalculateDailyMetrics(d);
-//
-//        // Время отхода (bedtime) переведём в часы
-//        int bedtimeMin = 0;
-//        if (!d.bedtime.empty()) {
-//            // простая функция перевода
-//            int h = 0, min = 0;
-//            char sep;
-//            std::stringstream ss(d.bedtime);
-//            ss >> h >> sep >> min;
-//            bedtimeMin = h * 60 + min;
-//        }
-//        // Для оси X переведём в часы
-//        double bedtimeHours = bedtimeMin / 60.0;
-//
-//        // % REM
-//        double total = m.lightSleep + m.deepSleep + m.remSleep;
-//        double remPercent = 0.0;
-//        if (total > 0.0) {
-//            remPercent = (m.remSleep / total) * 100.0;
-//        }
-//
-//        x.push_back(bedtimeHours);
-//        y.push_back(remPercent);
-//    }
-//
-//    if (ImPlot::BeginPlot("Зависимость времени отхода ко сну от % REM", ImVec2(-1, 300))) {
-//        ImPlot::SetupAxes("Bedtime, ч", "REM, %", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
-//        ImPlot::PlotScatter("Points", x.data(), y.data(), (int) x.size());
-//        ImPlot::EndPlot();
-//    }
-//}
 
-void Visualization::ShowMetricsTable(const SleepMetrics &metrics, const std::string &title) {
-    ImGui::Text("%s", title.c_str());
-    ImGui::Separator();
-    ImGui::Text("Время в постели: %.2f ч.", metrics.timeInBed);
-    ImGui::Text("Общее время сна: %.2f ч.", metrics.totalSleepTime);
-    ImGui::Text("Время засыпания: %.1f мин.", metrics.sleepOnset);
-    ImGui::Text("Кол-во пробуждений: %d", metrics.awakeningsCount);
-    ImGui::Text("Глубокий сон: %.2f ч.", metrics.deepSleep);
-    ImGui::Text("REM сон: %.2f ч.", metrics.remSleep);
-    ImGui::Text("Лёгкий сон: %.2f ч.", metrics.lightSleep);
-    ImGui::Text("Время бодрствования: %.2f ч.", metrics.awakeTime);
-    ImGui::Text("Эффективность сна: %.1f", metrics.efficiency);
-    ImGui::Separator();
+    ImGui::Text("Время в постели: %.2d ч", m.timeInBed);
+    ImGui::Text("Общее время сна: %.2d ч", m.totalSleepTime);
+    ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
+
+    ImGui::End();
+
 }

@@ -5,16 +5,21 @@
 #include <string>
 #include "DataLoader.h"
 
-// метрики сна
 struct SleepMetrics {
-    double timeInBed;       // время в постели, часы
-    double totalSleepTime;  // общее время сна, часы
-    double sleepOnset;      // время засыпания, мин
-    int awakeningsCount;    // количество пробуждений
-    double deepSleep;       // длительность глубоко сна, часы
-    double remSleep;        // длительность REM сна, часы
-    double lightSleep;      // длительность легкого сна, часы
-    double awakeTime;       // общее время бодрствований
+    int timeInBed;       // время в постели, мин
+    int totalSleepTime;  // общее время сна, мин
+    int sleepOnset;      // время засыпания, мин
+    int awakeningsCount;
+
+    int awakeDuration;
+    int deepSleepDuration;
+    int remSleepDuration;
+    int lightSleepDuration;
+
+    double lightSleepPercent;
+    double deepSleepPercent;
+    double remSleepPercent;
+
     double efficiency;      // метрика эффективности (1..100)
 };
 

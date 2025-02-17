@@ -19,4 +19,15 @@ double DateUtils::timePointToUnix(const std::chrono::system_clock::time_point &t
     return duration.count();
 }
 
+int DateUtils::diffBetween(const std::chrono::system_clock::time_point &start,
+                           const std::chrono::system_clock::time_point &end) {
+
+    return std::chrono::duration_cast<std::chrono::minutes>(end - start).count();
+}
+
+std::string DateUtils::formatTimeDiff(const int &timeDiff) {
+    int hours = timeDiff / 60;
+    int minutes = timeDiff % 60;
+    return std::to_string(hours) + " ч. " + std::to_string(minutes) + " мин.";
+}
 

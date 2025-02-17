@@ -20,6 +20,11 @@ public:
     static std::chrono::system_clock::time_point unixToTimePoint(const double &unixTime);
 
     static double timePointToUnix(const std::chrono::system_clock::time_point &tp);
+
+    static int diffBetween(const std::chrono::system_clock::time_point &start,
+                               const std::chrono::system_clock::time_point &end);
+
+    static std::string formatTimeDiff(const int& timeDiff);
 };
 
 #endif //SLEEPVISUALIZER_DATE_FORMATTER_H

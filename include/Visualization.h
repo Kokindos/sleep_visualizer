@@ -9,8 +9,9 @@
 class Visualization {
 public:
 
-    // график фаз сна (столбчатая диаграмма)
     static void ShowDailyPhasesPlot(const DailySleepData &data);
+
+    static void ShowDailySummary(const DailySleepData &data);
 
     // статистика за период
     static void ShowPeriodMetricsPlot(const std::vector<DailySleepData> &data);
@@ -19,7 +20,8 @@ public:
     static void ShowBedtimeVsRemPlot(const std::vector<DailySleepData> &data);
 
     // ключевые метрики
-    static void ShowMetricsTable(const SleepMetrics &metrics, const std::string &title);
+    static void ShowMetricsTable(const SleepMetrics &metrics);
+
 };
 
 #endif //SLEEP_VISUALIZER_VISUALIZATION_H
