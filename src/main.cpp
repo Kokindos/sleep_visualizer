@@ -108,13 +108,12 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("Sleep Visualizer");
+        ImGui::Begin("Sleep Visualizer", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
         if (!allData.empty()) {
             Visualization::ShowDailyPhasesPlot(allData[0]);
+            Visualization::ShowDailySummary(allData[0]);
         }
-
-        Visualization::ShowDailySummary(allData[0]);
 
 //        ImGui::TextWrapped("Рекомендации:\n%s", recommendation.c_str());
 

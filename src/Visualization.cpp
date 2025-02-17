@@ -42,6 +42,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
         ImPlot::SetupAxis(ImAxis_X1, "Время");
         ImPlot::SetupAxis(ImAxis_Y1, "Фаза");
 
+
         static double yTicks[] = {1.0, 2.0, 3.0, 4.0};
         static const char *yLabels[] = {"Awake", "Light", "Deep", "REM"};
         ImPlot::SetupAxisTicks(ImAxis_Y1, yTicks, 4, yLabels);
@@ -98,11 +99,12 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
                                                 {"Deep", m.deepSleepDuration, m.deepSleepPercent},
                                                 {"REM", m.remSleepDuration, m.remSleepPercent}}};
 
-    ImGui::Begin("Статистика за день");
+    ImGui::Begin("Статистика за день", nullptr, ImGuiWindowFlags_NoMove);
 
     ImGui::Text("Длительность фаз сна (время и проценты):");
     ImGui::Separator();
 
+    ImGui::Columns(3, "", false);
     if (ImGui::BeginTable("DurationsTable", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
         ImGui::TableSetupColumn("Фаза");
         ImGui::TableSetupColumn("Длительность");
@@ -126,7 +128,12 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
         ImGui::EndTable();
     }
 
-    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, 200))) {
+    ImGui::Text("Время в постели: %.2d ч", m.timeInBed);
+    ImGui::Text("Общее время сна: %.2d ч", m.totalSleepTime);
+    ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
+
+    ImGui::NextColumn();
+    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, 200), ImPlotFlags_NoLegend)) {
         ImPlot::SetupAxes("Фаза", "Минуты");
 
         //todo выделять память на тики в других графиках
@@ -146,12 +153,11 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
         ImPlot::EndPlot();
     }
 
+    ImGui::NextColumn();
     if (ImPlot::BeginPlot("Доля каждой фазы pie chart", ImVec2(-1, 200),
-                          ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText)) {
+                          ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs)) {
 
         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_NoTickLabels);
-        ImPlot::SetupAxisLimitsConstraints(ImAxis_Y1, 0, 1);
-        ImPlot::SetupAxisLimitsConstraints(ImAxis_X1, 0, 1);
 
         std::vector<double> percentages(phases.size());
         std::vector<const char *> labels(phases.size());
@@ -165,11 +171,6 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
                              0.5, 0.5, 0.4, "%.1f %%", 90.0);
         ImPlot::EndPlot();
     }
-
-
-    ImGui::Text("Время в постели: %.2d ч", m.timeInBed);
-    ImGui::Text("Общее время сна: %.2d ч", m.totalSleepTime);
-    ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
 
     ImGui::End();
 
