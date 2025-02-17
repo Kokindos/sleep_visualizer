@@ -140,10 +140,29 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
             xIndices[i] = (double) i;
         }
 
-
         ImPlot::SetupAxisTicks(ImAxis_X1, xIndices.data(), (int) xIndices.size(), xLabels.data());
 
         ImPlot::PlotBars("Фазы", xIndices.data(), yMinutes.data(), (int) phases.size(), 0.5);
+        ImPlot::EndPlot();
+    }
+
+    if (ImPlot::BeginPlot("Доля каждой фазы pie chart", ImVec2(-1, 200),
+                          ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText)) {
+
+        ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_NoTickLabels);
+        ImPlot::SetupAxisLimitsConstraints(ImAxis_Y1, 0, 1);
+        ImPlot::SetupAxisLimitsConstraints(ImAxis_X1, 0, 1);
+
+        std::vector<double> percentages(phases.size());
+        std::vector<const char *> labels(phases.size());
+
+        for (int i = 0; i < phases.size(); i++) {
+            percentages[i] = phases[i].percentage;
+            labels[i] = phases[i].name;
+        }
+
+        ImPlot::PlotPieChart(labels.data(), percentages.data(), (int) phases.size(),
+                             0.5, 0.5, 0.4, "%.1f %%", 90.0);
         ImPlot::EndPlot();
     }
 
