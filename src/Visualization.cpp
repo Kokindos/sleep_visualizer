@@ -84,22 +84,20 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             xTicks.push_back(xEnd);
         }
 
-        ImPlot::SetupAxisTicks(ImAxis_X1, xTicks.data(), (int) xTicks.size(), nullptr);
+        ImPlot::SetupAxisTicks(ImAxis_X1, xTicks.data(), static_cast<int>(xTicks.size()), nullptr);
 
         for (const auto &phase: data.phases) {
             //todo не переводить два раза в юникс
-            double xStart = DateUtils::timePointToUnix(phase.start);
-            double xEnd = DateUtils::timePointToUnix(phase.end);
-
+            const double xStart = DateUtils::timePointToUnix(phase.start);
+            const double xEnd = DateUtils::timePointToUnix(phase.end);
             const auto &info = PhaseVisualInfo::getPhaseInfo(phase.type);
 
-            double xs[2] = {xStart, xEnd};
-            double ys[2] = {info.yLevel, info.yLevel};
+            const double xs[2] = {xStart, xEnd};
+            const double ys[2] = {info.yLevel, info.yLevel};
 
             ImPlot::PushStyleColor(ImPlotCol_Line, info.color);
             ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 8.0f);
             ImPlot::PlotLine(info.name, xs, ys, 2);
-
             ImPlot::PopStyleVar();
             ImPlot::PopStyleColor();
         }
@@ -116,13 +114,14 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
                                                 {"Deep", m.deepSleepDuration, m.deepSleepPercent},
                                                 {"REM", m.remSleepDuration, m.remSleepPercent}}};
 
-    ImGui::Begin("Статистика за день", nullptr, ImGuiWindowFlags_NoMove);
+    ImGui::Begin("Статистика за день", nullptr, ImGuiWindowFlags_NoMove| ImGuiWindowFlags_NoResize);
 
     ImGui::Text("Длительность фаз сна (время и проценты):");
     ImGui::Separator();
 
     ImGui::Columns(3, "", false);
     if (ImGui::BeginTable("DurationsTable", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+
         ImGui::TableSetupColumn("Фаза");
         ImGui::TableSetupColumn("Длительность");
         ImGui::TableSetupColumn("Доля");
@@ -130,7 +129,6 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
 
         for (auto &p: phases) {
             ImGui::TableNextRow();
-
             ImGui::TableSetColumnIndex(0);
             ImGui::TextUnformatted(p.name);
 
@@ -145,8 +143,8 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
         ImGui::EndTable();
     }
 
-    ImGui::Text("Время в постели: %.2d ч", m.timeInBed);
-    ImGui::Text("Общее время сна: %.2d ч", m.totalSleepTime);
+    ImGui::Text("Время в постели: %s", DateUtils::formatTimeDiff(m.timeInBed).c_str());
+    ImGui::Text("Общее время сна: %s", DateUtils::formatTimeDiff(m.totalSleepTime).c_str());
     ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
 
     ImGui::NextColumn();
@@ -164,9 +162,9 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
             xIndices[i] = (double) i;
         }
 
-        ImPlot::SetupAxisTicks(ImAxis_X1, xIndices.data(), (int) xIndices.size(), xLabels.data());
+        ImPlot::SetupAxisTicks(ImAxis_X1, xIndices.data(), static_cast<int>(xIndices.size()), xLabels.data());
 
-        ImPlot::PlotBars("Фазы", xIndices.data(), yMinutes.data(), (int) phases.size(), 0.5);
+        ImPlot::PlotBars("Фазы", xIndices.data(), yMinutes.data(), static_cast<int>(phases.size()), 0.5);
         ImPlot::EndPlot();
     }
 
@@ -186,7 +184,7 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
             labels[i] = phases[i].name;
         }
 
-        ImPlot::PlotPieChart(labels.data(), percentages.data(), (int) phases.size(),
+        ImPlot::PlotPieChart(labels.data(), percentages.data(), static_cast<int>(phases.size()),
                              0.5, 0.5, 0.4, "%.1f %%", 90.0);
         ImPlot::EndPlot();
     }
