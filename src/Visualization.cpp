@@ -10,15 +10,24 @@ struct PhaseVisualInfo {
     ImVec4 color;
     const char *name;
 
-    static const PhaseVisualInfo &getInfo(SleepPhaseType phase) {
+    static const std::vector<PhaseVisualInfo> &getPhasesInfo() {
+        static const std::vector<PhaseVisualInfo> allPhasesInfo = {
+                {1.0, {1.0f, 0.0f, 0.0f, 1.0f}, "Awake"},
+                {2.0, {0.0f, 1.0f, 0.0f, 1.0f}, "Light"},
+                {3.0, {0.0f, 0.0f, 1.0f, 1.0f}, "Deep"},
+                {4.0, {1.0f, 1.0f, 0.0f, 1.0f}, "REM"}
+        };
+        return allPhasesInfo;
+    }
+
+    static const PhaseVisualInfo &getPhaseInfo(SleepPhaseType phase) {
         static const std::unordered_map<SleepPhaseType, PhaseVisualInfo> phaseMap = {
-                {SleepPhaseType::Awake, {1.0, {1.0f, 0.0f, 0.0f, 1.0f}, "Awake"}},
-                {SleepPhaseType::Light, {2.0, {0.0f, 1.0f, 0.0f, 1.0f}, "Light"}},
-                {SleepPhaseType::Deep,  {3.0, {0.0f, 0.0f, 1.0f, 1.0f}, "Deep"}},
-                {SleepPhaseType::REM,   {4.0, {1.0f, 1.0f, 0.0f, 1.0f}, "REM"}},
+                {SleepPhaseType::Awake, getPhasesInfo()[0]},
+                {SleepPhaseType::Light, getPhasesInfo()[1]},
+                {SleepPhaseType::Deep,  getPhasesInfo()[2]},
+                {SleepPhaseType::REM,   getPhasesInfo()[3]}
         };
         static const PhaseVisualInfo defaultInfo = {0.0, {0.5f, 0.5f, 0.5f, 1.0f}, "Unknown"};
-
         auto it = phaseMap.find(phase);
         return (it != phaseMap.end()) ? it->second : defaultInfo;
     }
@@ -44,22 +53,27 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
         ImPlot::SetupAxis(ImAxis_X1, "Время");
         ImPlot::SetupAxis(ImAxis_Y1, "Фаза");
 
+        const auto &allPhasesInfo = PhaseVisualInfo::getPhasesInfo();
+        std::vector<double> yTicks;
+        std::vector<const char *> yLabels;
+        for (const auto &phase: allPhasesInfo) {
+            yTicks.push_back(phase.yLevel);
+            yLabels.push_back(phase.name);
+        }
+        ImPlot::SetupAxisTicks(ImAxis_Y1, yTicks.data(), static_cast<int>(yTicks.size()), yLabels.data());
 
-        static double yTicks[] = {1.0, 2.0, 3.0, 4.0};
-        static const char *yLabels[] = {"Awake", "Light", "Deep", "REM"};
-        ImPlot::SetupAxisTicks(ImAxis_Y1, yTicks, 4, yLabels);
+        const double startTime = DateUtils::timePointToUnix(data.bedtime);
+        const double endTime = DateUtils::timePointToUnix(data.wakeTime);
 
-        double startTime = DateUtils::timePointToUnix(data.bedtime);
-        double endTime = DateUtils::timePointToUnix(data.wakeTime);
-
+        //todo тоже хардкод, но эти значения не изменятся
         ImPlot::SetupAxesLimits(startTime, endTime, 0.0, 4.5);
         ImPlot::SetupAxisLimitsConstraints(ImAxis_Y1, 0, 4.5);
 
         ImPlot::SetupAxisFormat(ImAxis_X1, [](double value, char *buff, int size, void *user_data) -> int {
             auto tp = DateUtils::unixToTimePoint(value);
             std::string formatted = DateUtils::onlyTime(tp);
-            std::strncpy(buff, formatted.c_str(), sizeof(buff));
-            return std::strlen(buff);
+            int written = snprintf(buff, size, "%s", formatted.c_str());
+            return (written < 0) ? 0 : written;
         });
 
         std::vector<double> xTicks;
@@ -77,7 +91,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             double xStart = DateUtils::timePointToUnix(phase.start);
             double xEnd = DateUtils::timePointToUnix(phase.end);
 
-            const auto &info = PhaseVisualInfo::getInfo(phase.type);
+            const auto &info = PhaseVisualInfo::getPhaseInfo(phase.type);
 
             double xs[2] = {xStart, xEnd};
             double ys[2] = {info.yLevel, info.yLevel};
