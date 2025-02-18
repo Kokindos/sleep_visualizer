@@ -34,6 +34,8 @@ struct PhaseDurationInfo {
 void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     if (data.phases.empty()) return;
 
+    ImGui::Begin("Sleep Visualizer", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
     ImGui::Text("Дата %s:", DateUtils::onlyDate(data.date).c_str());
 
     ImVec2 plotSize = ImVec2(ImGui::GetContentRegionAvail().x, 300);
@@ -90,6 +92,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
 
         ImPlot::EndPlot();
     }
+    ImGui::End();
 }
 
 void Visualization::ShowDailySummary(const DailySleepData &data) {
@@ -133,7 +136,7 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
 
     ImGui::NextColumn();
-    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, 200), ImPlotFlags_NoLegend)) {
+    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, -1), ImPlotFlags_NoLegend)) {
         ImPlot::SetupAxes("Фаза", "Минуты");
 
         //todo выделять память на тики в других графиках
@@ -154,10 +157,12 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     }
 
     ImGui::NextColumn();
-    if (ImPlot::BeginPlot("Доля каждой фазы pie chart", ImVec2(-1, 200),
-                          ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs)) {
+    if (ImPlot::BeginPlot("Доля каждой фазы pie chart", ImVec2(-1, -1),
+                          ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs)) {
 
-        ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoTickLabels, ImPlotAxisFlags_NoTickLabels);
+        ImPlot::SetupAxisLimits(ImAxis_X1, 0, 1);
+        ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoDecorations,
+                          ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoDecorations);
 
         std::vector<double> percentages(phases.size());
         std::vector<const char *> labels(phases.size());
