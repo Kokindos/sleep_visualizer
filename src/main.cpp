@@ -102,6 +102,8 @@ int main() {
     //основной цикл рендера
     while (!glfwWindowShouldClose(window)) {
 
+
+
         glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
