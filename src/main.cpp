@@ -88,10 +88,11 @@ int main() {
     std::string filePath = {
             "../data/example_data_week.json"
     };
-    WeeklySleepData allData = DataLoader::loadFromJsonFile(filePath);
+    WeeklySleepData weeklyData = DataLoader::loadFromJsonFile(filePath);
+    const DailySleepData todayData = weeklyData.sleepDays[0];
 
+    const SleepMetrics todayMetrics = SleepAnalyzer::CalculateDailyMetrics(todayData);
 
-    SleepMetrics todayMetrics = SleepAnalyzer::CalculateDailyMetrics(allData.sleepDays[0]);
     std::string recommendation = SleepRecommender::GenerateRecommendation(todayMetrics);
 
     //основной цикл рендера
@@ -103,10 +104,10 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        Visualization::ShowDailyPhasesPlot(allData.sleepDays[0]);
-        Visualization::ShowDailySummary(allData.sleepDays[0]);
+        Visualization::ShowDailyPhasesPlot(todayData);
+        Visualization::ShowMetricsSummary(todayMetrics, false);
 
-//        ImGui::TextWrapped("Рекомендации:\n%s", recommendation.c_str());
+
         ImGui::Render();
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -10,7 +10,7 @@ class Visualization {
 public:
     static void ShowDailyPhasesPlot(const DailySleepData &data);
 
-    static void ShowDailySummary(const DailySleepData &data);
+    static void ShowMetricsSummary(const SleepMetrics &m, const bool isAverage);
 
 };
 

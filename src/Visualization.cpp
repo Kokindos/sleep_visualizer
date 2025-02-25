@@ -1,5 +1,6 @@
 #include "Visualization.h"
 #include "DateUtils.h"
+#include "SleepAnalyzer.h"
 #include <implot.h>
 #include <imgui.h>
 #include <string>
@@ -108,9 +109,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     ImGui::End();
 }
 
-void Visualization::ShowDailySummary(const DailySleepData &data) {
-    SleepMetrics m = SleepAnalyzer::CalculateDailyMetrics(data);
-
+void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAverage) {
     std::array<PhaseDurationInfo, 3> phases = {{{"Light", m.lightSleepDuration, m.lightSleepPercent},
                                                 {"Deep", m.deepSleepDuration, m.deepSleepPercent},
                                                 {"REM", m.remSleepDuration, m.remSleepPercent}}};
@@ -118,18 +117,20 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - 300};
     ImGui::SetNextWindowPos({0, 300}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-    ImGui::Begin("Статистика за день", nullptr,
+    //todo кастомить строки в другом месте
+    ImGui::Begin(isAverage ? "Статистика за день" : "Статистика за неделю", nullptr,
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
-    ImGui::Text("Длительность фаз сна (время и проценты):");
+    ImGui::Text(isAverage ? "Cредняя длительность фаз сна (время и проценты):"
+                          : "Длительность фаз сна (время и проценты):");
     ImGui::Separator();
 
     ImGui::Columns(3, "", false);
     if (ImGui::BeginTable("DurationsTable", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
 
         ImGui::TableSetupColumn("Фаза");
-        ImGui::TableSetupColumn("Длительность");
-        ImGui::TableSetupColumn("Доля");
+        ImGui::TableSetupColumn(isAverage ? "Средняя длительность" : "Длительность");
+        ImGui::TableSetupColumn(isAverage ? "Cредняя доля" : "Доля");
         ImGui::TableHeadersRow();
 
         for (auto &p: phases) {
@@ -153,7 +154,7 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     ImGui::Text("Количество пробуждений: %d", m.awakeningsCount);
 
     ImGui::NextColumn();
-    if (ImPlot::BeginPlot("Доля каждой фазы", ImVec2(-1, -1), ImPlotFlags_NoLegend)) {
+    if (ImPlot::BeginPlot("Доля каждой фазы в минутах", ImVec2(-1, -1), ImPlotFlags_NoLegend)) {
         ImPlot::SetupAxes("Фаза", "Минуты");
 
         //todo выделять память на тики в других графиках
@@ -174,7 +175,7 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     }
 
     ImGui::NextColumn();
-    if (ImPlot::BeginPlot("Доля каждой фазы pie chart", ImVec2(-1, -1),
+    if (ImPlot::BeginPlot("Доля каждой фазы на круговой диаграмме", ImVec2(-1, -1),
                           ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs)) {
 
         ImPlot::SetupAxisLimits(ImAxis_X1, 0, 1);
