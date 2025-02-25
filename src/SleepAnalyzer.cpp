@@ -1,5 +1,6 @@
 #include "SleepAnalyzer.h"
 #include "DateUtils.h"
+#include <numeric>
 
 SleepMetrics SleepAnalyzer::CalculateDailyMetrics(const DailySleepData &data) {
     //todo убрать высчитываемые поля
@@ -39,15 +40,6 @@ SleepMetrics SleepAnalyzer::CalculateDailyMetrics(const DailySleepData &data) {
     return m;
 }
 
-std::vector<SleepMetrics> SleepAnalyzer::CalculateMetricsForPeriod(const std::vector<DailySleepData> &data) {
-    std::vector<SleepMetrics> metricsList;
-    metricsList.reserve(data.size());
-    for (const auto &dayData: data) {
-        metricsList.push_back(CalculateDailyMetrics(dayData));
-    }
-    return metricsList;
-}
-
 double SleepAnalyzer::CalculateSleepEfficiency(const SleepMetrics &m) {
 
     // 100*(totalSleepTime/timeInBed)-(0.5*awakeningsCount)-(sleepOnset/60)
@@ -62,4 +54,53 @@ double SleepAnalyzer::CalculateSleepEfficiency(const SleepMetrics &m) {
     if (efficiency < 1.0) efficiency = 1.0;
     if (efficiency > 100.0) efficiency = 100.0;
     return efficiency;
+}
+
+AverageSleepMetrics SleepAnalyzer::CalculateAverageMetrics(const WeeklySleepData &weeklyData) {
+    const auto totalMetrics = std::accumulate(
+            weeklyData.sleepDays.begin(),
+            weeklyData.sleepDays.end(),
+            SleepMetrics{},
+            [](SleepMetrics acc, const DailySleepData &day) {
+                SleepMetrics daily = CalculateDailyMetrics(day);
+                acc.timeInBed += daily.timeInBed;
+                acc.awakeDuration += daily.awakeDuration;
+                acc.lightSleepDuration += daily.lightSleepDuration;
+                acc.deepSleepDuration += daily.deepSleepDuration;
+                acc.remSleepDuration += daily.remSleepDuration;
+                acc.totalSleepTime += daily.totalSleepTime;
+                acc.efficiency += daily.efficiency;
+                acc.sleepOnset += daily.sleepOnset;
+                acc.awakeningsCount += daily.awakeningsCount;
+                return acc;
+            }
+    );
+
+    AverageSleepMetrics avgMetrics = {};
+
+    const auto daysCount = static_cast<double>(weeklyData.sleepDays.size());
+    auto avg = [daysCount](int total) {
+        return static_cast<double>(total) / daysCount;
+    };
+
+    const int totalSleepTime = totalMetrics.totalSleepTime;
+    auto calculatePercentage = [totalSleepTime](int duration) {
+        return static_cast<double>(duration) / totalSleepTime * 100.0;
+    };
+
+    avgMetrics.timeInBed = avg(totalMetrics.timeInBed);
+    avgMetrics.awakeDuration = avg(totalMetrics.awakeDuration);
+    avgMetrics.lightSleepDuration = avg(totalMetrics.lightSleepDuration);
+    avgMetrics.deepSleepDuration = avg(totalMetrics.deepSleepDuration);
+    avgMetrics.remSleepDuration = avg(totalMetrics.remSleepDuration);
+    avgMetrics.totalSleepTime = avg(totalMetrics.totalSleepTime);
+    avgMetrics.efficiency = totalMetrics.efficiency / daysCount;
+    avgMetrics.sleepOnset = avg(totalMetrics.sleepOnset);
+    avgMetrics.awakeningsCount = avg(totalMetrics.awakeningsCount);
+
+    avgMetrics.lightSleepPercent = calculatePercentage(totalMetrics.lightSleepDuration);
+    avgMetrics.deepSleepPercent = calculatePercentage(totalMetrics.deepSleepDuration);
+    avgMetrics.remSleepPercent = calculatePercentage(totalMetrics.remSleepDuration);
+
+    return avgMetrics;
 }
