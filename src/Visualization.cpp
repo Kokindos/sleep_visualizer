@@ -44,7 +44,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     if (data.phases.empty()) return;
 
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, 300};
-    ImGui::SetNextWindowPos({0, 0}, ImGuiCond_Always);
+    ImGui::SetNextWindowPos({0, 30}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
     ImGui::Begin("Sleep Visualizer", nullptr,
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
@@ -114,11 +114,11 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
                                                 {"Deep", m.deepSleepDuration, m.deepSleepPercent},
                                                 {"REM", m.remSleepDuration, m.remSleepPercent}}};
 
-    ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - 300};
-    ImGui::SetNextWindowPos({0, 300}, ImGuiCond_Always);
+    ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - 330};
+    ImGui::SetNextWindowPos({0, 330}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
     //todo кастомить строки в другом месте
-    ImGui::Begin(isAverage ? "Статистика за день" : "Статистика за неделю", nullptr,
+    ImGui::Begin(isAverage ? "Статистика за неделю" : "Статистика за день", nullptr,
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
     ImGui::Text(isAverage ? "Cредняя длительность фаз сна (время и проценты):"

@@ -92,6 +92,7 @@ int main() {
     const DailySleepData todayData = weeklyData.sleepDays[0];
 
     const SleepMetrics todayMetrics = SleepAnalyzer::CalculateDailyMetrics(todayData);
+    const SleepMetrics weeklyMetrics = SleepAnalyzer::CalculateAverageMetrics(weeklyData);
 
     std::string recommendation = SleepRecommender::GenerateRecommendation(todayMetrics);
 
@@ -104,9 +105,30 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        Visualization::ShowDailyPhasesPlot(todayData);
-        Visualization::ShowMetricsSummary(todayMetrics, false);
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+        ImGui::Begin("Визуализация", nullptr,
+                     ImGuiWindowFlags_NoTitleBar |
+                     ImGuiWindowFlags_NoResize |
+                     ImGuiWindowFlags_NoMove |
+                     ImGuiWindowFlags_NoBringToFrontOnFocus);
 
+        if (ImGui::BeginTabBar("MainTabs")) {
+            if (ImGui::BeginTabItem("Сегодня")) {
+                Visualization::ShowDailyPhasesPlot(todayData);
+                Visualization::ShowMetricsSummary(todayMetrics, false);
+                ImGui::EndTabItem();
+            }
+
+            if (ImGui::BeginTabItem("Неделя")) {
+                Visualization::ShowMetricsSummary(weeklyMetrics, true);
+                ImGui::EndTabItem();
+            }
+
+            ImGui::EndTabBar();
+        }
+
+        ImGui::End();
 
         ImGui::Render();
         glClear(GL_COLOR_BUFFER_BIT);
