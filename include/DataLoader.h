@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include "nlohmann/json.hpp"
 
 using DateTime = std::chrono::system_clock::time_point;
 
@@ -32,18 +33,23 @@ struct DailySleepData {
 //    int respirationRate;
 };
 
+struct WeeklySleepData {
+    std::array<DailySleepData, 7> sleepDays;
+};
+
 
 class DataLoader {
 public:
-    static DailySleepData loadFromJsonFile(const std::string &filename);
-
-    //todo лучше перейти на один файл
-    static std::vector<DailySleepData> loadFromMultipleJsonFiles(const std::vector<std::string> &filenames);
+    static WeeklySleepData loadFromJsonFile(const std::string &filename);
 
 private:
+    static DailySleepData parseDailyData(const nlohmann::json &j);
+
     static SleepPhaseType fromString(const std::string &phaseStr);
 
     static DateTime parseDateTime(const std::string &dateTimeStr, const std::string &format = "%Y-%m-%d %H:%M");
+
+    static WeeklySleepData parseWeeklyData(const nlohmann::json &weeklyJson);
 };
 
 #endif //SLEEP_VISUALIZER_DATALOADER_H

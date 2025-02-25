@@ -86,23 +86,17 @@ int main() {
 
     loadCyrillicFont();
 
-    std::vector<std::string> files = {
-            "../data/example_data_day.json"
+    std::string filePath = {
+            "../data/example_data_week.json"
     };
-    std::vector<DailySleepData> allData = DataLoader::loadFromMultipleJsonFiles(files);
+    WeeklySleepData allData = DataLoader::loadFromJsonFile(filePath);
 
-    //todo расширить до статистики за несколько дней
-    SleepMetrics todayMetrics{};
-    if (!allData.empty()) {
-        todayMetrics = SleepAnalyzer::CalculateDailyMetrics(allData[0]);
-    }
 
+    SleepMetrics todayMetrics = SleepAnalyzer::CalculateDailyMetrics(allData.sleepDays[0]);
     std::string recommendation = SleepRecommender::GenerateRecommendation(todayMetrics);
 
     //основной цикл рендера
     while (!glfwWindowShouldClose(window)) {
-
-
 
         glfwPollEvents();
 
@@ -110,10 +104,8 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        if (!allData.empty()) {
-            Visualization::ShowDailyPhasesPlot(allData[0]);
-            Visualization::ShowDailySummary(allData[0]);
-        }
+        Visualization::ShowDailyPhasesPlot(allData.sleepDays[0]);
+        Visualization::ShowDailySummary(allData.sleepDays[0]);
 
 //        ImGui::TextWrapped("Рекомендации:\n%s", recommendation.c_str());
         ImGui::Render();
