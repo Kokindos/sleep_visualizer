@@ -5,6 +5,7 @@
 #include <string>
 #include "DataLoader.h"
 
+//для средних метрик за неделю полученные средние значения округляются
 struct SleepMetrics {
     int timeInBed;       // время в постели, мин
     int totalSleepTime;  // общее время сна, мин
@@ -23,30 +24,12 @@ struct SleepMetrics {
     double efficiency;      // метрика эффективности (1..100)
 };
 
-struct AverageSleepMetrics {
-    double timeInBed;
-    double totalSleepTime;
-    double sleepOnset;
-    double awakeningsCount;
-
-    double awakeDuration;
-    double deepSleepDuration;
-    double remSleepDuration;
-    double lightSleepDuration;
-
-    double lightSleepPercent;
-    double deepSleepPercent;
-    double remSleepPercent;
-
-    double efficiency;
-};
-
 class SleepAnalyzer {
 public:
 
     static SleepMetrics CalculateDailyMetrics(const DailySleepData &data);
 
-    static AverageSleepMetrics CalculateAverageMetrics(const WeeklySleepData &weeklyData);
+    static SleepMetrics CalculateAverageMetrics(const WeeklySleepData &weeklyData);
 
     static double CalculateSleepEfficiency(const SleepMetrics &m);
 };

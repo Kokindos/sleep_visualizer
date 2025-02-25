@@ -39,14 +39,14 @@ struct PhaseDurationInfo {
     double percentage;
 };
 
-
 void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     if (data.phases.empty()) return;
 
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, 300};
     ImGui::SetNextWindowPos({0, 0}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-    ImGui::Begin("Sleep Visualizer", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin("Sleep Visualizer", nullptr,
+                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
     ImGui::Text("Дата %s:", DateUtils::onlyDate(data.date).c_str());
 
@@ -118,7 +118,8 @@ void Visualization::ShowDailySummary(const DailySleepData &data) {
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - 300};
     ImGui::SetNextWindowPos({0, 300}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-    ImGui::Begin("Статистика за день", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin("Статистика за день", nullptr,
+                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
     ImGui::Text("Длительность фаз сна (время и проценты):");
     ImGui::Separator();

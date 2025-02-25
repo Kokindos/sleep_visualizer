@@ -56,7 +56,7 @@ double SleepAnalyzer::CalculateSleepEfficiency(const SleepMetrics &m) {
     return efficiency;
 }
 
-AverageSleepMetrics SleepAnalyzer::CalculateAverageMetrics(const WeeklySleepData &weeklyData) {
+SleepMetrics SleepAnalyzer::CalculateAverageMetrics(const WeeklySleepData &weeklyData) {
     const auto totalMetrics = std::accumulate(
             weeklyData.sleepDays.begin(),
             weeklyData.sleepDays.end(),
@@ -76,11 +76,11 @@ AverageSleepMetrics SleepAnalyzer::CalculateAverageMetrics(const WeeklySleepData
             }
     );
 
-    AverageSleepMetrics avgMetrics = {};
+    SleepMetrics avgMetrics = {};
 
     const auto daysCount = static_cast<double>(weeklyData.sleepDays.size());
     auto avg = [daysCount](int total) {
-        return static_cast<double>(total) / daysCount;
+        return static_cast<int>(std::round((total) / daysCount));
     };
 
     const int totalSleepTime = totalMetrics.totalSleepTime;
