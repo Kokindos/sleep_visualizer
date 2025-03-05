@@ -73,6 +73,15 @@ void applyStyle() {
     style.Colors[ImGuiCol_TableBorderLight] = ImVec4(0.82f, 0.86f, 0.91f, 1.00f);
     style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.95f, 0.97f, 0.99f, 1.00f);
     style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.86f, 0.90f, 0.94f, 1.0f);
+
+    //цвета для каждой фазы
+    ImVec4 colors[] = {
+            {0.42f, 0.79f, 0.47f, 1.0f},
+            {0.30f, 0.59f, 1.0f,  1.0f},
+            {0.65f, 0.42f, 1.0f,  1.0f},
+            {1.0f,  0.42f, 0.42f, 1.0f},
+    };
+    ImPlot::AddColormap("MySleepPalette", colors, 4);
 }
 
 void initGui(GLFWwindow *window) {
