@@ -19,6 +19,7 @@ struct PhaseVisualInfo {
         };
         return allPhasesInfo;
     }
+
     //todo убрать лишнее
     static const PhaseVisualInfo &getPhaseInfo(SleepPhaseType phase) {
         static const std::unordered_map<SleepPhaseType, PhaseVisualInfo> phaseMap = {
@@ -45,10 +46,8 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, 300};
     ImGui::SetNextWindowPos({0, 30}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-    ImGui::Begin("Sleep Visualizer", nullptr,
+    ImGui::Begin(DateUtils::onlyDate(data.date).c_str(), nullptr,
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-
-    ImGui::Text("Дата %s:", DateUtils::onlyDate(data.date).c_str());
 
     if (ImPlot::BeginPlot("Визуализация фаз сна за день", ImGui::GetContentRegionAvail(), ImPlotFlags_NoInputs)) {
         ImPlot::SetupAxis(ImAxis_X1, "Время");
