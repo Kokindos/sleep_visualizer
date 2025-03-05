@@ -10,4 +10,5 @@
 ```cmake -S . -B build ```
 ```cmake --build build```
 4. Отрыть собранное приложение
+```cd build```
 ```./build/SleepVisualizer```
