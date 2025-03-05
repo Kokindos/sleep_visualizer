@@ -7,7 +7,7 @@
 2. Перейти в папку проекта
    ```cd sleep_visualizer```
 3. Собрать проект
-```cmake -S src -B build ```
+```cmake -S . -B build ```
 ```cmake --build build```
 4. Отрыть собранное приложение:
-```./bin/app```
+```./build/SleepVisualizer```
