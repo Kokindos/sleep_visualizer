@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "DataLoader.h"
+#include "../../sleep_data_loader/DataLoader.h"
 
 //для средних метрик за неделю полученные средние значения округляются
 struct SleepMetrics {

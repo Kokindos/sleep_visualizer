@@ -6,16 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(thirdparty)
 
-include_directories(include)
-
+include_directories(src/app/include)
 
 set(SOURCES
-        src/main.cpp
-        src/DataLoader.cpp
-        src/SleepAnalyzer.cpp
-        src/SleepRecommender.cpp
-        src/Visualization.cpp
-        src/DateUtils.cpp
+        src/app/main.cpp
+        src/app/SleepAnalyzer.cpp
+        src/app/SleepRecommender.cpp
+        src/app/Visualization.cpp
+        src/app/DateUtils.cpp
         )
 
 
@@ -27,4 +25,7 @@ target_link_libraries(${PROJECT_NAME}
         nlohmann_json::nlohmann_json
         imgui
         implot
+        sleep_data_loader
         )
+
+add_subdirectory(src/sleep_data_loader)

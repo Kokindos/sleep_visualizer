@@ -1,6 +1,6 @@
-#include <imgui.h>
-#include <implot.h>
-#include <GLFW/glfw3.h>
+#include "imgui.h"
+#include "implot.h"
+#include "GLFW/glfw3.h"
 
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 
-#include "DataLoader.h"
+#include "../sleep_data_loader/DataLoader.h"
 #include "SleepAnalyzer.h"
 #include "SleepRecommender.h"
 #include "Visualization.h"
