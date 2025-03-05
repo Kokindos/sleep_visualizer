@@ -13,10 +13,10 @@ struct PhaseVisualInfo {
 
     static const std::vector<PhaseVisualInfo> &getPhasesInfo() {
         static const std::vector<PhaseVisualInfo> allPhasesInfo = {
-                {1.0, {1.0f, 0.0f, 0.0f, 1.0f}, "Awake"},
-                {2.0, {0.0f, 1.0f, 0.0f, 1.0f}, "Light"},
-                {3.0, {0.0f, 0.0f, 1.0f, 1.0f}, "Deep"},
-                {4.0, {1.0f, 1.0f, 0.0f, 1.0f}, "REM"}
+                {1.0, {1.0f,  0.42f, 0.42f, 1.0f}, "Awake"},
+                {2.0, {0.42f, 0.79f, 0.47f, 1.0f}, "Light"},
+                {3.0, {0.30f, 0.59f, 1.0f,  1.0f}, "Deep"},
+                {4.0, {0.65f, 0.42f, 1.0f,  1.0f}, "REM"}
         };
         return allPhasesInfo;
     }
@@ -98,7 +98,7 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             const double ys[2] = {info.yLevel, info.yLevel};
 
             ImPlot::PushStyleColor(ImPlotCol_Line, info.color);
-            ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 8.0f);
+            ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 10.0f);
             ImPlot::PlotLine(info.name, xs, ys, 2);
             ImPlot::PopStyleVar();
             ImPlot::PopStyleColor();
@@ -190,8 +190,10 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
             labels[i] = phases[i].name;
         }
 
+        ImPlot::PushColormap(ImPlotColormap_Pastel);
         ImPlot::PlotPieChart(labels.data(), percentages.data(), static_cast<int>(phases.size()),
                              0.5, 0.5, 0.4, "%.1f %%", 90.0);
+        ImPlot::PopColormap();
         ImPlot::EndPlot();
     }
 
