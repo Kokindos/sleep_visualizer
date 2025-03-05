@@ -52,6 +52,38 @@ GLFWwindow *initWindow() {
 
 }
 
+void applyStyle() {
+    ImGuiStyle &style = ImGui::GetStyle();
+    style.WindowRounding = 8.0f;
+    style.FrameRounding = 6.0f;
+    style.GrabRounding = 8.0f;
+
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.96f, 0.98f, 1.0f);
+    style.Colors[ImGuiCol_FrameBg] = ImVec4(0.86f, 0.90f, 0.94f, 1.0f);
+
+    style.Colors[ImGuiCol_TitleBg] = ImVec4(0.70f, 0.79f, 0.88f, 1.0f);
+    style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.70f, 0.79f, 0.88f, 1.0f);
+
+    style.Colors[ImGuiCol_Header] = ImVec4(0.80f, 0.86f, 0.92f, 1.0f);
+    style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.75f, 0.81f, 0.89f, 1.0f);
+    style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.68f, 0.75f, 0.84f, 1.0f);
+
+    style.Colors[ImGuiCol_TableHeaderBg] = ImVec4(0.85f, 0.89f, 0.94f, 1.00f);
+    style.Colors[ImGuiCol_TableBorderStrong] = ImVec4(0.70f, 0.77f, 0.85f, 1.00f);
+    style.Colors[ImGuiCol_TableBorderLight] = ImVec4(0.82f, 0.86f, 0.91f, 1.00f);
+    style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.95f, 0.97f, 0.99f, 1.00f);
+    style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.86f, 0.90f, 0.94f, 1.0f);
+
+    //цвета для каждой фазы
+    ImVec4 colors[] = {
+            {0.42f, 0.79f, 0.47f, 1.0f},
+            {0.30f, 0.59f, 1.0f,  1.0f},
+            {0.65f, 0.42f, 1.0f,  1.0f},
+            {1.0f,  0.42f, 0.42f, 1.0f},
+    };
+    ImPlot::AddColormap("MySleepPalette", colors, 4);
+}
+
 void initGui(GLFWwindow *window) {
 
     IMGUI_CHECKVERSION();
@@ -59,13 +91,14 @@ void initGui(GLFWwindow *window) {
     ImGui::CreateContext();
     ImPlot::CreateContext();
 
-    ImGui::StyleColorsDark();
-    ImPlot::StyleColorsDark();
+    ImGui::StyleColorsLight();
+    ImPlot::StyleColorsLight();
+
+    applyStyle();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
-
 
 void disposeGui() {
     ImGui_ImplOpenGL3_Shutdown();

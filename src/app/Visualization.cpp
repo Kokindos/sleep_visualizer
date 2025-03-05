@@ -8,19 +8,19 @@
 
 struct PhaseVisualInfo {
     double yLevel;
-    ImVec4 color;
     const char *name;
 
     static const std::vector<PhaseVisualInfo> &getPhasesInfo() {
         static const std::vector<PhaseVisualInfo> allPhasesInfo = {
-                {1.0, {1.0f, 0.0f, 0.0f, 1.0f}, "Awake"},
-                {2.0, {0.0f, 1.0f, 0.0f, 1.0f}, "Light"},
-                {3.0, {0.0f, 0.0f, 1.0f, 1.0f}, "Deep"},
-                {4.0, {1.0f, 1.0f, 0.0f, 1.0f}, "REM"}
+                {1.0, "Awake"},
+                {2.0, "Light"},
+                {3.0, "Deep"},
+                {4.0, "REM"}
         };
         return allPhasesInfo;
     }
 
+    //todo убрать лишнее
     static const PhaseVisualInfo &getPhaseInfo(SleepPhaseType phase) {
         static const std::unordered_map<SleepPhaseType, PhaseVisualInfo> phaseMap = {
                 {SleepPhaseType::Awake, getPhasesInfo()[0]},
@@ -28,7 +28,7 @@ struct PhaseVisualInfo {
                 {SleepPhaseType::Deep,  getPhasesInfo()[2]},
                 {SleepPhaseType::REM,   getPhasesInfo()[3]}
         };
-        static const PhaseVisualInfo defaultInfo = {0.0, {0.5f, 0.5f, 0.5f, 1.0f}, "Unknown"};
+        static const PhaseVisualInfo defaultInfo = {0.0, "Unknown"};
         auto it = phaseMap.find(phase);
         return (it != phaseMap.end()) ? it->second : defaultInfo;
     }
@@ -42,14 +42,12 @@ struct PhaseDurationInfo {
 
 void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
     if (data.phases.empty()) return;
-
+    ImPlot::PushColormap("MySleepPalette");
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, 300};
     ImGui::SetNextWindowPos({0, 30}, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-    ImGui::Begin("Sleep Visualizer", nullptr,
+    ImGui::Begin(DateUtils::onlyDate(data.date).c_str(), nullptr,
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-
-    ImGui::Text("Дата %s:", DateUtils::onlyDate(data.date).c_str());
 
     if (ImPlot::BeginPlot("Визуализация фаз сна за день", ImGui::GetContentRegionAvail(), ImPlotFlags_NoInputs)) {
         ImPlot::SetupAxis(ImAxis_X1, "Время");
@@ -97,15 +95,14 @@ void Visualization::ShowDailyPhasesPlot(const DailySleepData &data) {
             const double xs[2] = {xStart, xEnd};
             const double ys[2] = {info.yLevel, info.yLevel};
 
-            ImPlot::PushStyleColor(ImPlotCol_Line, info.color);
-            ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 8.0f);
+            ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 10.0f);
             ImPlot::PlotLine(info.name, xs, ys, 2);
             ImPlot::PopStyleVar();
-            ImPlot::PopStyleColor();
         }
 
         ImPlot::EndPlot();
     }
+    ImPlot::PopColormap();
     ImGui::End();
 }
 
@@ -113,6 +110,7 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
     std::array<PhaseDurationInfo, 3> phases = {{{"Light", m.lightSleepDuration, m.lightSleepPercent},
                                                 {"Deep", m.deepSleepDuration, m.deepSleepPercent},
                                                 {"REM", m.remSleepDuration, m.remSleepPercent}}};
+    ImPlot::PushColormap("MySleepPalette");
 
     ImVec2 windowSize = {ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - 330};
     ImGui::SetNextWindowPos({0, 330}, ImGuiCond_Always);
@@ -156,7 +154,6 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
     ImGui::NextColumn();
     if (ImPlot::BeginPlot("Доля каждой фазы в минутах", ImVec2(-1, -1), ImPlotFlags_NoLegend)) {
         ImPlot::SetupAxes("Фаза", "Минуты");
-
         //todo выделять память на тики в других графиках
         std::vector<double> yMinutes(phases.size());
         std::vector<const char *> xLabels(phases.size());
@@ -170,7 +167,9 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
 
         ImPlot::SetupAxisTicks(ImAxis_X1, xIndices.data(), static_cast<int>(xIndices.size()), xLabels.data());
 
-        ImPlot::PlotBars("Фазы", xIndices.data(), yMinutes.data(), static_cast<int>(phases.size()), 0.5);
+        for (int i = 0; i < phases.size(); i++) {
+            ImPlot::PlotBars(xLabels[i], &xIndices[i], &yMinutes[i], 1, 0.5);
+        }
         ImPlot::EndPlot();
     }
 
@@ -194,7 +193,7 @@ void Visualization::ShowMetricsSummary(const SleepMetrics &m, const bool isAvera
                              0.5, 0.5, 0.4, "%.1f %%", 90.0);
         ImPlot::EndPlot();
     }
-
+    ImPlot::PopColormap();
     ImGui::End();
 
 }

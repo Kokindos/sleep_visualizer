@@ -16,7 +16,7 @@ SleepMetrics SleepAnalyzer::CalculateDailyMetrics(const DailySleepData &data) {
 
         if (phase.type == SleepPhaseType::Awake) {
             m.awakeDuration += phaseDuration;
-            m.awakeningsCount++;
+            awakeCount++;
         } else if (phase.type == SleepPhaseType::Light) {
             m.lightSleepDuration += phaseDuration;
         } else if (phase.type == SleepPhaseType::Deep) {
