@@ -82,7 +82,7 @@ void disposeWindow(GLFWwindow *window) {
 
 void loadCyrillicFont() {
     ImGuiIO &io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("../font/Roboto-Regular.ttf", 16.0f, nullptr, io.Fonts->GetGlyphRangesCyrillic());
+    io.Fonts->AddFontFromFileTTF("../../font/Roboto-Regular.ttf", 16.0f, nullptr, io.Fonts->GetGlyphRangesCyrillic());
     ImGui_ImplOpenGL3_CreateFontsTexture();
 }
 
