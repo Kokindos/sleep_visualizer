@@ -1,2 +1,13 @@
-# sleep_visualizer
-C++ app which visualize sleep data
+# Sleep Visualizer
+Визуализирует данные о сне
+
+## Инcтрукция по сборке и запуску
+1. Склонировать репозиторий
+   ```git clone https://github.com/Kokindos/sleep_visualizer.git```
+2. Перейти в папку проекта
+   ```cd sleep_visualizer```
+3. Собрать проект
+```cmake -S src -B build ```
+```cmake --build build```
+4. Отрыть собранное приложение:
+```./bin/app```
