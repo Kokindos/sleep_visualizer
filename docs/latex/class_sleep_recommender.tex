@@ -1,0 +1,34 @@
+\doxysection{Класс Sleep\+Recommender}
+\hypertarget{class_sleep_recommender}{}\label{class_sleep_recommender}\index{SleepRecommender@{SleepRecommender}}
+\doxysubsubsection*{Открытые статические члены}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::string \mbox{\hyperlink{class_sleep_recommender_a4419606e6fcdcb8cac29eb146b2cdaab}{Generate\+Recommendation}} (const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&metrics)
+\begin{DoxyCompactList}\small\item\em Генерирует текстовую рекомендацию, как улучшить сон \end{DoxyCompactList}\item 
+\Hypertarget{class_sleep_recommender_ad3be3c5b2f257e4b8cbe0c706fd44fd8}\label{class_sleep_recommender_ad3be3c5b2f257e4b8cbe0c706fd44fd8} 
+static std\+::string {\bfseries Generate\+Insight} (const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&today, const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&yesterday)
+\begin{DoxyCompactList}\small\item\em Сравнивает статистику сна за 2 дня и генерирует текстовое описание сравнения \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Методы}
+\Hypertarget{class_sleep_recommender_a4419606e6fcdcb8cac29eb146b2cdaab}\index{SleepRecommender@{SleepRecommender}!GenerateRecommendation@{GenerateRecommendation}}
+\index{GenerateRecommendation@{GenerateRecommendation}!SleepRecommender@{SleepRecommender}}
+\doxysubsubsection{\texorpdfstring{GenerateRecommendation()}{GenerateRecommendation()}}
+{\footnotesize\ttfamily \label{class_sleep_recommender_a4419606e6fcdcb8cac29eb146b2cdaab} 
+std\+::string Sleep\+Recommender\+::\+Generate\+Recommendation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&}]{metrics}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Генерирует текстовую рекомендацию, как улучшить сон 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em metrics} & -\/ данные о сне за любой промежуток времени \\
+\hline
+\end{DoxyParams}
+
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+src/app/include/Sleep\+Recommender.\+h\item 
+src/app/Sleep\+Recommender.\+cpp\end{DoxyCompactItemize}

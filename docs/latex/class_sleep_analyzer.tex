@@ -1,0 +1,86 @@
+\doxysection{Класс Sleep\+Analyzer}
+\hypertarget{class_sleep_analyzer}{}\label{class_sleep_analyzer}\index{SleepAnalyzer@{SleepAnalyzer}}
+
+
+Класс для анализа данных о сне.  
+
+
+
+
+{\ttfamily \#include $<$Sleep\+Analyzer.\+h$>$}
+
+\doxysubsubsection*{Открытые статические члены}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \mbox{\hyperlink{class_sleep_analyzer_ae5846c6cfbae3ffe40cb4c49856d63e0}{Calculate\+Daily\+Metrics}} (const \mbox{\hyperlink{struct_daily_sleep_data}{Daily\+Sleep\+Data}} \&data)
+\begin{DoxyCompactList}\small\item\em Рассчитывает метрики сна за один день. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \mbox{\hyperlink{class_sleep_analyzer_a7ba715d4129418d0a203d8f8b25a3ba8}{Calculate\+Average\+Metrics}} (const \mbox{\hyperlink{struct_weekly_sleep_data}{Weekly\+Sleep\+Data}} \&weekly\+Data)
+\begin{DoxyCompactList}\small\item\em Рассчитывает средние метрики сна за неделю. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{class_sleep_analyzer_a3066db3a3838eb4b901a88e0e17f499f}{Calculate\+Sleep\+Efficiency}} (const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&m)
+\begin{DoxyCompactList}\small\item\em Рассчитывает эффективность сна на основе метрик сна. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Класс для анализа данных о сне. 
+
+\doxysubsection{Методы}
+\Hypertarget{class_sleep_analyzer_a7ba715d4129418d0a203d8f8b25a3ba8}\index{SleepAnalyzer@{SleepAnalyzer}!CalculateAverageMetrics@{CalculateAverageMetrics}}
+\index{CalculateAverageMetrics@{CalculateAverageMetrics}!SleepAnalyzer@{SleepAnalyzer}}
+\doxysubsubsection{\texorpdfstring{CalculateAverageMetrics()}{CalculateAverageMetrics()}}
+{\footnotesize\ttfamily \label{class_sleep_analyzer_a7ba715d4129418d0a203d8f8b25a3ba8} 
+\mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} Sleep\+Analyzer\+::\+Calculate\+Average\+Metrics (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_weekly_sleep_data}{Weekly\+Sleep\+Data}} \&}]{weekly\+Data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Рассчитывает средние метрики сна за неделю. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em weekly\+Data} & Данные о сне за неделю. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+\doxylink{struct_sleep_metrics}{Sleep\+Metrics} Средние метрики сна. 
+\end{DoxyReturn}
+\Hypertarget{class_sleep_analyzer_ae5846c6cfbae3ffe40cb4c49856d63e0}\index{SleepAnalyzer@{SleepAnalyzer}!CalculateDailyMetrics@{CalculateDailyMetrics}}
+\index{CalculateDailyMetrics@{CalculateDailyMetrics}!SleepAnalyzer@{SleepAnalyzer}}
+\doxysubsubsection{\texorpdfstring{CalculateDailyMetrics()}{CalculateDailyMetrics()}}
+{\footnotesize\ttfamily \label{class_sleep_analyzer_ae5846c6cfbae3ffe40cb4c49856d63e0} 
+\mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} Sleep\+Analyzer\+::\+Calculate\+Daily\+Metrics (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_daily_sleep_data}{Daily\+Sleep\+Data}} \&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Рассчитывает метрики сна за один день. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em data} & Данные за день \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+\doxylink{struct_sleep_metrics}{Sleep\+Metrics} Метрики сна 
+\end{DoxyReturn}
+\Hypertarget{class_sleep_analyzer_a3066db3a3838eb4b901a88e0e17f499f}\index{SleepAnalyzer@{SleepAnalyzer}!CalculateSleepEfficiency@{CalculateSleepEfficiency}}
+\index{CalculateSleepEfficiency@{CalculateSleepEfficiency}!SleepAnalyzer@{SleepAnalyzer}}
+\doxysubsubsection{\texorpdfstring{CalculateSleepEfficiency()}{CalculateSleepEfficiency()}}
+{\footnotesize\ttfamily \label{class_sleep_analyzer_a3066db3a3838eb4b901a88e0e17f499f} 
+double Sleep\+Analyzer\+::\+Calculate\+Sleep\+Efficiency (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_sleep_metrics}{Sleep\+Metrics}} \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Рассчитывает эффективность сна на основе метрик сна. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em m} & Метрики сна. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+double Эффективность сна от 1 до 100. 
+\end{DoxyReturn}
+
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+src/app/include/Sleep\+Analyzer.\+h\item 
+src/app/Sleep\+Analyzer.\+cpp\end{DoxyCompactItemize}

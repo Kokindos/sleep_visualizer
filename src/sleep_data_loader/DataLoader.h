@@ -1,6 +1,6 @@
 /**
- * @file DataLoader.cpp
- * @brief Загрузчик данных о сне из JSON файла и парсинга данных.
+ * @file DataLoader.h
+ * @brief Поставляет классы для хранения данных о сне,  загрузчик данных из JSON файла, функции для парсинга данных.
  */
 #ifndef SLEEP_VISUALIZER_DATALOADER_H
 #define SLEEP_VISUALIZER_DATALOADER_H

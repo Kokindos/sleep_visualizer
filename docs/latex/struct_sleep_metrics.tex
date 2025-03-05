@@ -1,0 +1,123 @@
+\doxysection{Структура Sleep\+Metrics}
+\hypertarget{struct_sleep_metrics}{}\label{struct_sleep_metrics}\index{SleepMetrics@{SleepMetrics}}
+
+
+Структура для представления метрик сна.  
+
+
+
+
+{\ttfamily \#include $<$Sleep\+Analyzer.\+h$>$}
+
+\doxysubsubsection*{Открытые атрибуты}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a1f39ce7a35d27de0baa46e0299676fc4}{time\+In\+Bed}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a8bdeba2264fade4a752489ce20f6ccae}{total\+Sleep\+Time}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a1e35d96525dd0c2d9e5939af0c126bf2}{sleep\+Onset}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a983ef11053b0aac06f8cf158aed3e8df}{awakenings\+Count}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_ae4cb4d59b6c81c93f79058e5893d6bfb}{awake\+Duration}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a9c674be070fb34efae2e8f925b5da9d6}{deep\+Sleep\+Duration}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_ad05fbb2f1a893a57d6105600ffc9b4f6}{rem\+Sleep\+Duration}}
+\item 
+int \mbox{\hyperlink{struct_sleep_metrics_a2f0caef76ceb83548f56263e5d291ae3}{light\+Sleep\+Duration}}
+\item 
+double \mbox{\hyperlink{struct_sleep_metrics_a9a4a1c85afc83af26907b9c2b212c876}{light\+Sleep\+Percent}}
+\item 
+double \mbox{\hyperlink{struct_sleep_metrics_ad6b013b22c2df9ad731c9bcbe2cadd5c}{deep\+Sleep\+Percent}}
+\item 
+double \mbox{\hyperlink{struct_sleep_metrics_a7e267d6e59c609938a743f16a9b2484f}{rem\+Sleep\+Percent}}
+\item 
+double \mbox{\hyperlink{struct_sleep_metrics_a4b792895293e3b6677046639bc7d8c3c}{efficiency}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Структура для представления метрик сна. 
+
+Для средних метрик за неделю полученные средние значения округляются. 
+
+\doxysubsection{Данные класса}
+\Hypertarget{struct_sleep_metrics_ae4cb4d59b6c81c93f79058e5893d6bfb}\index{SleepMetrics@{SleepMetrics}!awakeDuration@{awakeDuration}}
+\index{awakeDuration@{awakeDuration}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{awakeDuration}{awakeDuration}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_ae4cb4d59b6c81c93f79058e5893d6bfb} 
+int Sleep\+Metrics\+::awake\+Duration}
+
+Продолжительность бодрствования, мин. \Hypertarget{struct_sleep_metrics_a983ef11053b0aac06f8cf158aed3e8df}\index{SleepMetrics@{SleepMetrics}!awakeningsCount@{awakeningsCount}}
+\index{awakeningsCount@{awakeningsCount}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{awakeningsCount}{awakeningsCount}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a983ef11053b0aac06f8cf158aed3e8df} 
+int Sleep\+Metrics\+::awakenings\+Count}
+
+Количество пробуждений. \Hypertarget{struct_sleep_metrics_a9c674be070fb34efae2e8f925b5da9d6}\index{SleepMetrics@{SleepMetrics}!deepSleepDuration@{deepSleepDuration}}
+\index{deepSleepDuration@{deepSleepDuration}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{deepSleepDuration}{deepSleepDuration}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a9c674be070fb34efae2e8f925b5da9d6} 
+int Sleep\+Metrics\+::deep\+Sleep\+Duration}
+
+Продолжительность глубокого сна, мин. \Hypertarget{struct_sleep_metrics_ad6b013b22c2df9ad731c9bcbe2cadd5c}\index{SleepMetrics@{SleepMetrics}!deepSleepPercent@{deepSleepPercent}}
+\index{deepSleepPercent@{deepSleepPercent}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{deepSleepPercent}{deepSleepPercent}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_ad6b013b22c2df9ad731c9bcbe2cadd5c} 
+double Sleep\+Metrics\+::deep\+Sleep\+Percent}
+
+Процент глубокого сна от общего времени сна. \Hypertarget{struct_sleep_metrics_a4b792895293e3b6677046639bc7d8c3c}\index{SleepMetrics@{SleepMetrics}!efficiency@{efficiency}}
+\index{efficiency@{efficiency}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{efficiency}{efficiency}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a4b792895293e3b6677046639bc7d8c3c} 
+double Sleep\+Metrics\+::efficiency}
+
+Метрика эффективности сна (от 1 до 100). \Hypertarget{struct_sleep_metrics_a2f0caef76ceb83548f56263e5d291ae3}\index{SleepMetrics@{SleepMetrics}!lightSleepDuration@{lightSleepDuration}}
+\index{lightSleepDuration@{lightSleepDuration}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{lightSleepDuration}{lightSleepDuration}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a2f0caef76ceb83548f56263e5d291ae3} 
+int Sleep\+Metrics\+::light\+Sleep\+Duration}
+
+Продолжительность легкого сна, мин. \Hypertarget{struct_sleep_metrics_a9a4a1c85afc83af26907b9c2b212c876}\index{SleepMetrics@{SleepMetrics}!lightSleepPercent@{lightSleepPercent}}
+\index{lightSleepPercent@{lightSleepPercent}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{lightSleepPercent}{lightSleepPercent}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a9a4a1c85afc83af26907b9c2b212c876} 
+double Sleep\+Metrics\+::light\+Sleep\+Percent}
+
+Процент легкого сна от общего времени сна. \Hypertarget{struct_sleep_metrics_ad05fbb2f1a893a57d6105600ffc9b4f6}\index{SleepMetrics@{SleepMetrics}!remSleepDuration@{remSleepDuration}}
+\index{remSleepDuration@{remSleepDuration}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{remSleepDuration}{remSleepDuration}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_ad05fbb2f1a893a57d6105600ffc9b4f6} 
+int Sleep\+Metrics\+::rem\+Sleep\+Duration}
+
+Продолжительность REM сна, мин. \Hypertarget{struct_sleep_metrics_a7e267d6e59c609938a743f16a9b2484f}\index{SleepMetrics@{SleepMetrics}!remSleepPercent@{remSleepPercent}}
+\index{remSleepPercent@{remSleepPercent}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{remSleepPercent}{remSleepPercent}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a7e267d6e59c609938a743f16a9b2484f} 
+double Sleep\+Metrics\+::rem\+Sleep\+Percent}
+
+Процент REM сна от общего времени сна. \Hypertarget{struct_sleep_metrics_a1e35d96525dd0c2d9e5939af0c126bf2}\index{SleepMetrics@{SleepMetrics}!sleepOnset@{sleepOnset}}
+\index{sleepOnset@{sleepOnset}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{sleepOnset}{sleepOnset}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a1e35d96525dd0c2d9e5939af0c126bf2} 
+int Sleep\+Metrics\+::sleep\+Onset}
+
+Время засыпания, мин. \Hypertarget{struct_sleep_metrics_a1f39ce7a35d27de0baa46e0299676fc4}\index{SleepMetrics@{SleepMetrics}!timeInBed@{timeInBed}}
+\index{timeInBed@{timeInBed}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{timeInBed}{timeInBed}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a1f39ce7a35d27de0baa46e0299676fc4} 
+int Sleep\+Metrics\+::time\+In\+Bed}
+
+Время в постели, мин. \Hypertarget{struct_sleep_metrics_a8bdeba2264fade4a752489ce20f6ccae}\index{SleepMetrics@{SleepMetrics}!totalSleepTime@{totalSleepTime}}
+\index{totalSleepTime@{totalSleepTime}!SleepMetrics@{SleepMetrics}}
+\doxysubsubsection{\texorpdfstring{totalSleepTime}{totalSleepTime}}
+{\footnotesize\ttfamily \label{struct_sleep_metrics_a8bdeba2264fade4a752489ce20f6ccae} 
+int Sleep\+Metrics\+::total\+Sleep\+Time}
+
+Общее время сна, мин. 
+
+Объявления и описания членов структуры находятся в файле\+:\begin{DoxyCompactItemize}
+\item 
+src/app/include/Sleep\+Analyzer.\+h\end{DoxyCompactItemize}

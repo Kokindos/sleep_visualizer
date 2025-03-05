@@ -1,0 +1,159 @@
+\doxysection{Класс Date\+Utils}
+\hypertarget{class_date_utils}{}\label{class_date_utils}\index{DateUtils@{DateUtils}}
+
+
+Утилиты для обработки и форматирования даты и времени.  
+
+
+
+
+{\ttfamily \#include $<$Date\+Utils.\+h$>$}
+
+\doxysubsubsection*{Открытые члены}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_date_utils_a2d7844a3345e60985729c53838a3a7ed}\label{class_date_utils_a2d7844a3345e60985729c53838a3a7ed} 
+{\bfseries Date\+Utils} (const \mbox{\hyperlink{class_date_utils}{Date\+Utils}} \&)=delete
+\item 
+\Hypertarget{class_date_utils_afd3c7612ab06db48c1a3725b3717b6ce}\label{class_date_utils_afd3c7612ab06db48c1a3725b3717b6ce} 
+\mbox{\hyperlink{class_date_utils}{Date\+Utils}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_date_utils}{Date\+Utils}} \&)=delete
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Открытые статические члены}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::string \mbox{\hyperlink{class_date_utils_a282d0beadbdb04c6018307f2dddc1806}{only\+Time}} (const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&tp)
+\begin{DoxyCompactList}\small\item\em Форматирует время в строку, содердащую только часы и минуты \end{DoxyCompactList}\item 
+static std\+::string \mbox{\hyperlink{class_date_utils_aa533d28b474314da6fc29211fe56adc8}{only\+Date}} (const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&tp)
+\begin{DoxyCompactList}\small\item\em Форматирует время в строку только с датой. \end{DoxyCompactList}\item 
+static std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \mbox{\hyperlink{class_date_utils_adf86c72f5b488c13d5f28d7a88da1090}{unix\+To\+Time\+Point}} (const double \&unix\+Time)
+\begin{DoxyCompactList}\small\item\em Конвертирует Unix timestamp в time\+\_\+point. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{class_date_utils_a84930365f560a9c127fb4633d4f42474}{time\+Point\+To\+Unix}} (const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&tp)
+\begin{DoxyCompactList}\small\item\em Конвертирует объект time\+\_\+point в Unix timestamp. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{class_date_utils_a64a7528ddac2b7a17d6bb25e6f944f39}{diff\+Between}} (const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&start, const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&end)
+\begin{DoxyCompactList}\small\item\em Возвращает разницу в минутах между двумя временными точками. \end{DoxyCompactList}\item 
+static std\+::string \mbox{\hyperlink{class_date_utils_a845eb06dbd4aa8d11588e546dcaef8c8}{format\+Time\+Diff}} (const int \&time\+Diff)
+\begin{DoxyCompactList}\small\item\em Форматирует целочисленную разницу во времени в минутах в удобочитаемую строку. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Утилиты для обработки и форматирования даты и времени. 
+
+Этот класс предоставляет статические методы для конвертации между разными представлениями времени и форматирования. Объекты этого класса создавать нельзя. 
+
+\doxysubsection{Методы}
+\Hypertarget{class_date_utils_a64a7528ddac2b7a17d6bb25e6f944f39}\index{DateUtils@{DateUtils}!diffBetween@{diffBetween}}
+\index{diffBetween@{diffBetween}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{diffBetween()}{diffBetween()}}
+{\footnotesize\ttfamily \label{class_date_utils_a64a7528ddac2b7a17d6bb25e6f944f39} 
+int Date\+Utils\+::diff\+Between (\begin{DoxyParamCaption}\item[{const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&}]{start}{, }\item[{const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&}]{end}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Возвращает разницу в минутах между двумя временными точками. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em start} & Начальная временная точка. \\
+\hline
+{\em end} & Конечная временная точка. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Разница между {\ttfamily end} и {\ttfamily start} в минутах. 
+\end{DoxyReturn}
+\Hypertarget{class_date_utils_a845eb06dbd4aa8d11588e546dcaef8c8}\index{DateUtils@{DateUtils}!formatTimeDiff@{formatTimeDiff}}
+\index{formatTimeDiff@{formatTimeDiff}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{formatTimeDiff()}{formatTimeDiff()}}
+{\footnotesize\ttfamily \label{class_date_utils_a845eb06dbd4aa8d11588e546dcaef8c8} 
+std\+::string Date\+Utils\+::format\+Time\+Diff (\begin{DoxyParamCaption}\item[{const int \&}]{time\+Diff}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Форматирует целочисленную разницу во времени в минутах в удобочитаемую строку. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em time\+Diff} & Разница во времени в минутах. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Стнрока вида X ч. Y мин. 
+\end{DoxyReturn}
+\Hypertarget{class_date_utils_aa533d28b474314da6fc29211fe56adc8}\index{DateUtils@{DateUtils}!onlyDate@{onlyDate}}
+\index{onlyDate@{onlyDate}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{onlyDate()}{onlyDate()}}
+{\footnotesize\ttfamily \label{class_date_utils_aa533d28b474314da6fc29211fe56adc8} 
+std\+::string Date\+Utils\+::only\+Date (\begin{DoxyParamCaption}\item[{const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&}]{tp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Форматирует время в строку только с датой. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em tp} & Временная точка, которую нужно отформатировать. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Строка с представленной датой в формате (YYYY-\/\+MM-\/\+DD). 
+\end{DoxyReturn}
+\Hypertarget{class_date_utils_a282d0beadbdb04c6018307f2dddc1806}\index{DateUtils@{DateUtils}!onlyTime@{onlyTime}}
+\index{onlyTime@{onlyTime}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{onlyTime()}{onlyTime()}}
+{\footnotesize\ttfamily \label{class_date_utils_a282d0beadbdb04c6018307f2dddc1806} 
+std\+::string Date\+Utils\+::only\+Time (\begin{DoxyParamCaption}\item[{const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&}]{tp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Форматирует время в строку, содердащую только часы и минуты 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em tp} & Временная точка, которую нужно отформатировать. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Строка, представляющая время в формате ЧЧ\+:ММ. 
+\end{DoxyReturn}
+\Hypertarget{class_date_utils_a84930365f560a9c127fb4633d4f42474}\index{DateUtils@{DateUtils}!timePointToUnix@{timePointToUnix}}
+\index{timePointToUnix@{timePointToUnix}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{timePointToUnix()}{timePointToUnix()}}
+{\footnotesize\ttfamily \label{class_date_utils_a84930365f560a9c127fb4633d4f42474} 
+double Date\+Utils\+::time\+Point\+To\+Unix (\begin{DoxyParamCaption}\item[{const std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \&}]{tp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Конвертирует объект time\+\_\+point в Unix timestamp. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em tp} & Временная точка \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Unix-\/время в виде числа с плавающей точкой. 
+\end{DoxyReturn}
+\Hypertarget{class_date_utils_adf86c72f5b488c13d5f28d7a88da1090}\index{DateUtils@{DateUtils}!unixToTimePoint@{unixToTimePoint}}
+\index{unixToTimePoint@{unixToTimePoint}!DateUtils@{DateUtils}}
+\doxysubsubsection{\texorpdfstring{unixToTimePoint()}{unixToTimePoint()}}
+{\footnotesize\ttfamily \label{class_date_utils_adf86c72f5b488c13d5f28d7a88da1090} 
+std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point Date\+Utils\+::unix\+To\+Time\+Point (\begin{DoxyParamCaption}\item[{const double \&}]{unix\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Конвертирует Unix timestamp в time\+\_\+point. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em unix\+Time} & Unix-\/время, представленное в виде числа с плавающей точкой. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Соответствующий time\+\_\+point объект. 
+\end{DoxyReturn}
+
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+src/app/include/Date\+Utils.\+h\item 
+src/app/Date\+Utils.\+cpp\end{DoxyCompactItemize}

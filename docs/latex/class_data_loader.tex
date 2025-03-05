@@ -1,0 +1,51 @@
+\doxysection{Класс Data\+Loader}
+\hypertarget{class_data_loader}{}\label{class_data_loader}\index{DataLoader@{DataLoader}}
+
+
+Класс для загрузки и парсинга информации о сне из JSON-\/файлов.  
+
+
+
+
+{\ttfamily \#include $<$Data\+Loader.\+h$>$}
+
+\doxysubsubsection*{Открытые статические члены}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_weekly_sleep_data}{Weekly\+Sleep\+Data}} \mbox{\hyperlink{class_data_loader_a89523925999c0eb950af940060946d8d}{load\+From\+Json\+File}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Загружает данные о сне за неделю из указанного JSON-\/файла. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Класс для загрузки и парсинга информации о сне из JSON-\/файлов. 
+
+\doxysubsection{Методы}
+\Hypertarget{class_data_loader_a89523925999c0eb950af940060946d8d}\index{DataLoader@{DataLoader}!loadFromJsonFile@{loadFromJsonFile}}
+\index{loadFromJsonFile@{loadFromJsonFile}!DataLoader@{DataLoader}}
+\doxysubsubsection{\texorpdfstring{loadFromJsonFile()}{loadFromJsonFile()}}
+{\footnotesize\ttfamily \label{class_data_loader_a89523925999c0eb950af940060946d8d} 
+\mbox{\hyperlink{struct_weekly_sleep_data}{Weekly\+Sleep\+Data}} Data\+Loader\+::load\+From\+Json\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Загружает данные о сне за неделю из указанного JSON-\/файла. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em filename} & Путь к JSON-\/файлу, содержащему данные о сне. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Структура с данными о сне за неделю.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Исключения}
+{\em std\+::runtime\+\_\+error} & Если невозможно открыть файл или возникла ошибка в процессе парсинга JSON. \\
+\hline
+\end{DoxyExceptions}
+
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+src/sleep\+\_\+data\+\_\+loader/\mbox{\hyperlink{_data_loader_8h}{Data\+Loader.\+h}}\item 
+src/sleep\+\_\+data\+\_\+loader/Data\+Loader.\+cpp\end{DoxyCompactItemize}

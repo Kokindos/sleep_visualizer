@@ -13,6 +13,14 @@
 #include "SleepRecommender.h"
 #include "Visualization.h"
 
+/**
+ * @file
+ * @brief Инициализация и запуск приложения для визуализации данных о сне.
+ *
+ * Этот файл содержит функции для настройки окна GLFW и интеграции с ImGui для
+ * рендеринга графического интерфейса. Приложение загружает данные о сне, анализирует
+ * их и представляет результаты в виде графического интерфейса.
+ */
 
 static const char *glsl_version = "#version 410";
 
@@ -78,6 +86,11 @@ void loadCyrillicFont() {
     ImGui_ImplOpenGL3_CreateFontsTexture();
 }
 
+/**
+ * @brief Точка входа в программу.
+ *
+ * @details Загружает данные о сне и запускает главный цикл рендера приложения.
+ */
 int main() {
 
     GLFWwindow *window = initWindow();

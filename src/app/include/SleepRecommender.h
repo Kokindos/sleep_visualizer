@@ -7,10 +7,17 @@
 
 class SleepRecommender {
 public:
-
+    /**
+    * @brief Генерирует текстовую рекомендацию, как улучшить сон
+    *
+    * @param  metrics - данные о сне за любой промежуток времени
+    */
     static std::string GenerateRecommendation(const SleepMetrics &metrics);
 
-    // выводы из данных (сравнение)
+    /**
+    * @brief Сравнивает статистику сна за 2 дня и генерирует текстовое описание сравнения
+    *
+    */
     static std::string GenerateInsight(const SleepMetrics &today, const SleepMetrics &yesterday);
 };
 

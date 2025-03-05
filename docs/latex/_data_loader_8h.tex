@@ -1,0 +1,73 @@
+\doxysection{Файл src/sleep\+\_\+data\+\_\+loader/\+Data\+Loader.h}
+\hypertarget{_data_loader_8h}{}\label{_data_loader_8h}\index{src/sleep\_data\_loader/DataLoader.h@{src/sleep\_data\_loader/DataLoader.h}}
+
+
+Поставляет классы для хранения данных о сне, загрузчик данных из JSON файла, функции для парсинга данных.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include "{}nlohmann/json.\+hpp"{}}\newline
+\doxysubsubsection*{Классы}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_sleep_phase}{Sleep\+Phase}}
+\begin{DoxyCompactList}\small\item\em Структура, содержащая информацию о фазе сна \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_daily_sleep_data}{Daily\+Sleep\+Data}}
+\begin{DoxyCompactList}\small\item\em Структура для хранения информации о сне за одни сутки. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_weekly_sleep_data}{Weekly\+Sleep\+Data}}
+\begin{DoxyCompactList}\small\item\em Структура для хранения информации о сне за неделю. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_data_loader}{Data\+Loader}}
+\begin{DoxyCompactList}\small\item\em Класс для загрузки и парсинга информации о сне из JSON-\/файлов. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Определения типов}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_data_loader_8h_a781d05d4438e75e609b1b4a181293989}\label{_data_loader_8h_a781d05d4438e75e609b1b4a181293989} 
+using {\bfseries Date\+Time} = std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Перечисления}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786}{Sleep\+Phase\+Type}} \{ \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9914a0ce04a7b7b6a8e39bec55064b82}{Light}}
+, \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a21d01af167e6874b88ed5f6dc7c4b1e4}{Deep}}
+, \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786af5b7d8538da68fa55ace6e8f83a2378c}{REM}}
+, \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9ca8bcac74fbf1f118cc3589aeca836f}{Awake}}
+ \}
+\begin{DoxyCompactList}\small\item\em Перечисления возможных типов фаз сна \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Поставляет классы для хранения данных о сне, загрузчик данных из JSON файла, функции для парсинга данных. 
+
+
+
+\doxysubsection{Перечисления}
+\Hypertarget{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786}\index{DataLoader.h@{DataLoader.h}!SleepPhaseType@{SleepPhaseType}}
+\index{SleepPhaseType@{SleepPhaseType}!DataLoader.h@{DataLoader.h}}
+\doxysubsubsection{\texorpdfstring{SleepPhaseType}{SleepPhaseType}}
+{\footnotesize\ttfamily \label{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786} 
+enum class \mbox{\hyperlink{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786}{Sleep\+Phase\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Перечисления возможных типов фаз сна 
+
+\begin{DoxyEnumFields}[2]{Элементы перечислений}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Light@{Light}!DataLoader.h@{DataLoader.h}}\index{DataLoader.h@{DataLoader.h}!Light@{Light}}}\Hypertarget{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9914a0ce04a7b7b6a8e39bec55064b82}\label{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9914a0ce04a7b7b6a8e39bec55064b82} 
+Light&Лёгкий сон \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Deep@{Deep}!DataLoader.h@{DataLoader.h}}\index{DataLoader.h@{DataLoader.h}!Deep@{Deep}}}\Hypertarget{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a21d01af167e6874b88ed5f6dc7c4b1e4}\label{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a21d01af167e6874b88ed5f6dc7c4b1e4} 
+Deep&Глубокий сон \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REM@{REM}!DataLoader.h@{DataLoader.h}}\index{DataLoader.h@{DataLoader.h}!REM@{REM}}}\Hypertarget{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786af5b7d8538da68fa55ace6e8f83a2378c}\label{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786af5b7d8538da68fa55ace6e8f83a2378c} 
+REM&Быстрый сон \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Awake@{Awake}!DataLoader.h@{DataLoader.h}}\index{DataLoader.h@{DataLoader.h}!Awake@{Awake}}}\Hypertarget{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9ca8bcac74fbf1f118cc3589aeca836f}\label{_data_loader_8h_a7f957887d6c05eb6a8f968329896e786a9ca8bcac74fbf1f118cc3589aeca836f} 
+Awake&Бодрствование или пробуждение \\
+\hline
+
+\end{DoxyEnumFields}
