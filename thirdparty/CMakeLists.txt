@@ -63,7 +63,7 @@ ExternalProject_Add(
         doctest
         PREFIX ${CMAKE_BINARY_DIR}/doctest
         GIT_REPOSITORY https://github.com/doctest/doctest.git
-        TIMEOUT 10
+        TIMEOUT 30
         UPDATE_COMMAND ${GIT_EXECUTABLE} pull
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
@@ -72,6 +72,6 @@ ExternalProject_Add(
 )
 
 ExternalProject_Get_Property(doctest source_dir)
-set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest)
+set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest CACHE INTERNAL "")
 enable_testing()
 

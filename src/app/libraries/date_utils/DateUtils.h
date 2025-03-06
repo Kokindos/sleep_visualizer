@@ -60,7 +60,7 @@ public:
     * @return Разница между @p end и @p start в минутах.
     */
     static int diffBetween(const std::chrono::system_clock::time_point &start,
-                               const std::chrono::system_clock::time_point &end);
+                           const std::chrono::system_clock::time_point &end);
 
 
     /**
@@ -69,7 +69,7 @@ public:
     * @param timeDiff Разница во времени в минутах.
     * @return Стнрока вида X ч. Y мин.
     */
-    static std::string formatTimeDiff(const int& timeDiff);
+    static std::string formatTimeDiff(const int &timeDiff);
 };
 
 #endif //SLEEPVISUALIZER_DATE_FORMATTER_H

@@ -13,7 +13,6 @@ set(SOURCES
         src/app/SleepAnalyzer.cpp
         src/app/SleepRecommender.cpp
         src/app/Visualization.cpp
-        src/app/libraries/date_utils/DateUtils.cpp
         )
 
 
@@ -26,6 +25,9 @@ target_link_libraries(${PROJECT_NAME}
         imgui
         implot
         sleep_data_loader
+        date_utils
         )
 
 add_subdirectory(src/app/libraries/sleep_data_loader)
+add_subdirectory(src/app/libraries/date_utils)
+add_subdirectory(src/app/tests)
