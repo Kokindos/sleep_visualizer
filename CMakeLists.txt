@@ -13,7 +13,7 @@ set(SOURCES
         src/app/SleepAnalyzer.cpp
         src/app/SleepRecommender.cpp
         src/app/Visualization.cpp
-        src/app/DateUtils.cpp
+        src/app/libraries/date_utils/DateUtils.cpp
         )
 
 
@@ -28,4 +28,4 @@ target_link_libraries(${PROJECT_NAME}
         sleep_data_loader
         )
 
-add_subdirectory(src/sleep_data_loader)
+add_subdirectory(src/app/libraries/sleep_data_loader)

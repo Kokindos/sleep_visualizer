@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 
-#include "../sleep_data_loader/DataLoader.h"
+#include "../libraries/sleep_data_loader/DataLoader.h"
 #include "SleepAnalyzer.h"
 #include "SleepRecommender.h"
 #include "Visualization.h"
