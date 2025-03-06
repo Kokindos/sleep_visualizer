@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "doctest.h"
-#include "../libraries/date_utils/DateUtils.h"
+#include "../DateUtils.h"
 #include <chrono>
 #include <chrono>
 #include <format>

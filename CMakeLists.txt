@@ -30,4 +30,4 @@ target_link_libraries(${PROJECT_NAME}
 
 add_subdirectory(src/app/libraries/sleep_data_loader)
 add_subdirectory(src/app/libraries/date_utils)
-add_subdirectory(src/app/tests)
+add_subdirectory(src/app/libraries/date_utils/tests)
