@@ -26,6 +26,7 @@ target_link_libraries(${PROJECT_NAME}
         implot
         sleep_data_loader
         date_utils
+        imgui_file_dialog
         )
 
 add_subdirectory(src/app/libraries/sleep_data_loader)
