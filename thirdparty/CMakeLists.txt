@@ -63,7 +63,7 @@ ExternalProject_Add(
         doctest
         PREFIX ${CMAKE_BINARY_DIR}/doctest
         GIT_REPOSITORY https://github.com/doctest/doctest.git
-        TIMEOUT 10
+        TIMEOUT 30
         UPDATE_COMMAND ${GIT_EXECUTABLE} pull
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
@@ -72,6 +72,22 @@ ExternalProject_Add(
 )
 
 ExternalProject_Get_Property(doctest source_dir)
-set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest)
+set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest CACHE INTERNAL "")
 enable_testing()
 
+FetchContent_Declare(
+        imgui_file_dialog
+        GIT_REPOSITORY https://github.com/aiekick/ImGuiFileDialog
+        GIT_TAG v0.6.7
+)
+FetchContent_MakeAvailable(imgui_file_dialog)
+
+add_library(imgui_file_dialog STATIC
+        ${imgui_file_dialog_SOURCE_DIR}/ImGuiFileDialog.h
+        ${imgui_file_dialog_SOURCE_DIR}/ImGuiFileDialog.cpp
+        ${imgui_file_dialog_SOURCE_DIR}/ImGuiFileDialogConfig.h
+        )
+target_include_directories(imgui_file_dialog PUBLIC
+        ${imgui_file_dialog_SOURCE_DIR}
+        )
+target_link_libraries(imgui_file_dialog PUBLIC imgui)

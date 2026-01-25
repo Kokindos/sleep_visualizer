@@ -1,0 +1,1 @@
+add_library(date_utils STATIC DateUtils.h DateUtils.cpp)

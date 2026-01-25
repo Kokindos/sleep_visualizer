@@ -1,6 +1,7 @@
 #include "imgui.h"
 #include "implot.h"
 #include "GLFW/glfw3.h"
+#include "ImGuiFileDialog.h"
 
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -8,7 +9,7 @@
 #include <string>
 #include <iostream>
 
-#include "../sleep_data_loader/DataLoader.h"
+#include "../libraries/sleep_data_loader/DataLoader.h"
 #include "SleepAnalyzer.h"
 #include "SleepRecommender.h"
 #include "Visualization.h"
@@ -131,16 +132,10 @@ int main() {
 
     loadCyrillicFont();
 
-    std::string filePath = {
-            "../data/example_data_week.json"
-    };
-    WeeklySleepData weeklyData = DataLoader::loadFromJsonFile(filePath);
-    const DailySleepData todayData = weeklyData.sleepDays[0];
-
-    const SleepMetrics todayMetrics = SleepAnalyzer::CalculateDailyMetrics(todayData);
-    const SleepMetrics weeklyMetrics = SleepAnalyzer::CalculateAverageMetrics(weeklyData);
-
-    std::string recommendation = SleepRecommender::GenerateRecommendation(todayMetrics);
+    WeeklySleepData weeklyData;
+    DailySleepData todayData;
+    SleepMetrics todayMetrics, weeklyMetrics;
+    bool fileLoaded = false;
 
     //основной цикл рендера
     while (!glfwWindowShouldClose(window)) {
@@ -151,30 +146,64 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-        ImGui::Begin("Визуализация", nullptr,
-                     ImGuiWindowFlags_NoTitleBar |
-                     ImGuiWindowFlags_NoResize |
-                     ImGuiWindowFlags_NoMove |
-                     ImGuiWindowFlags_NoBringToFrontOnFocus);
+        ImVec2 screenSize = ImGui::GetIO().DisplaySize;
 
-        if (ImGui::BeginTabBar("MainTabs")) {
-            if (ImGui::BeginTabItem("Сегодня")) {
-                Visualization::ShowDailyPhasesPlot(todayData);
-                Visualization::ShowMetricsSummary(todayMetrics, false);
-                ImGui::EndTabItem();
+        if (!fileLoaded) {
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(screenSize);
+            ImGui::Begin("Загрузка файла", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                                 ImGuiWindowFlags_NoMove);
+
+            ImGui::SetCursorPos(ImVec2(screenSize.x * 0.5f - 100, screenSize.y * 0.5f - 30));
+            if (ImGui::Button("Загрузить файл", ImVec2(200, 60))) {
+                ImGuiFileDialog::Instance()->OpenDialog("Выбор файла JSON", "Выберите JSON##loader", ".json");
             }
 
-            if (ImGui::BeginTabItem("Неделя")) {
-                Visualization::ShowMetricsSummary(weeklyMetrics, true);
-                ImGui::EndTabItem();
+            if (ImGuiFileDialog::Instance()->Display("Выбор файла JSON")) {
+                if (ImGuiFileDialog::Instance()->IsOk()) {
+                    std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+                    try {
+                        weeklyData = DataLoader::loadFromJsonFile(filePath);
+                        todayData = weeklyData.sleepDays[0];
+                        todayMetrics = SleepAnalyzer::CalculateDailyMetrics(todayData);
+                        weeklyMetrics = SleepAnalyzer::CalculateAverageMetrics(weeklyData);
+                        fileLoaded = true;
+                    }
+                    catch (const std::exception &e) {
+                        std::cerr << "Ошибка загрузки файла: " << e.what() << std::endl;
+                    }
+                }
+                ImGuiFileDialog::Instance()->Close();
             }
 
-            ImGui::EndTabBar();
+            ImGui::End();
+        } else {
+
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+            ImGui::Begin("Визуализация", nullptr,
+                         ImGuiWindowFlags_NoTitleBar |
+                         ImGuiWindowFlags_NoResize |
+                         ImGuiWindowFlags_NoMove |
+                         ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+            if (ImGui::BeginTabBar("MainTabs")) {
+                if (ImGui::BeginTabItem("Сегодня")) {
+                    Visualization::ShowDailyPhasesPlot(todayData);
+                    Visualization::ShowMetricsSummary(todayMetrics, false);
+                    ImGui::EndTabItem();
+                }
+
+                if (ImGui::BeginTabItem("Неделя")) {
+                    Visualization::ShowMetricsSummary(weeklyMetrics, true);
+                    Visualization::ShowWeeklyPhasesPlot(weeklyData);
+                    ImGui::EndTabItem();
+                }
+
+                ImGui::EndTabBar();
+            }
+            ImGui::End();
         }
-
-        ImGui::End();
 
         ImGui::Render();
         glClear(GL_COLOR_BUFFER_BIT);

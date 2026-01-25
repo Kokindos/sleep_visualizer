@@ -4,7 +4,6 @@
 #include <string>
 #include "SleepAnalyzer.h"
 
-
 class SleepRecommender {
 public:
     /**

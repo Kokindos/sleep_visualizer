@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "../../sleep_data_loader/DataLoader.h"
+#include "../libraries/sleep_data_loader/DataLoader.h"
 
 /**
  * @brief Структура для представления метрик сна.
